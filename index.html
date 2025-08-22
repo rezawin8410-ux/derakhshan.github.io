@@ -1,20 +1,14 @@
 <!DOCTYPE html>
 <html lang="fa-IR" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<title>درخشان – شستشوی مبل و تشک در محلش ارومیه</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
+  <meta charset="UTF-8">
+  <title>درخشان – شستشوی مبل و تشک در محلش ارومیه</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
     :root{--primary:#00bfa5;--accent:#ff6f00;--text:#004d40;--bg:#e0f7fa}
     *{margin:0;padding:0;box-sizing:border-box;font-family:'IRANSans',Tahoma,sans-serif}
     body{background:var(--bg);color:var(--text);line-height:1.9}
     .container{max-width:1200px;margin:0 auto;padding:0 20px}
-    @keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-    .fade{animation:fadeIn 1s forwards}
-    header{background:var(--primary);color:#fff;padding:15px 0;position:sticky;top:0;z-index:1000}
-    .header-content{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap}
-    nav ul{display:flex;gap:20px;list-style:none;flex-wrap:wrap}
-    nav a{color:#fff;text-decoration:none;font-weight:600;transition:.3s}
     .hero{background:linear-gradient(135deg,var(--primary),#00897b);color:#fff;min-height:60vh;display:flex;align-items:center;justify-content:center;text-align:center}
     .hero h2{font-size:clamp(1.8rem,5vw,3rem);margin-bottom:15px}
     .cta-button{background:var(--accent);color:#fff;padding:14px 30px;border-radius:50px;font-size:1.2rem;text-decoration:none;font-weight:700}
@@ -22,158 +16,56 @@
     .price-item{display:flex;justify-content:space-between;align-items:center;background:#fff;border-radius:15px;padding:15px 25px;box-shadow:0 6px 15px rgba(0,0,0,.08)}
     .original{text-decoration:line-through;color:#777}
     .final{color:var(--primary);font-weight:700;font-size:1.3rem}
-    @keyframes glow{0%{text-shadow:0 0 5px #ffd700,0 0 10px #ffd700}50%{text-shadow:0 0 10px #ffd700,0 0 20px #ffd700,0 0 30px #ff6f00}100%{text-shadow:0 0 5px #ffd700,0 0 10px #ffd700}}
-    .brand-glow{font-size:1rem;font-weight:700;color:#fff;background:rgba(0,191,165,.75);padding:4px 8px;border-radius:6px;position:absolute;bottom:10px;right:10px;animation:glow 2s ease-in-out infinite}
-    .importance-scroll{height:300px;overflow-y:scroll;border-radius:15px;background:#fff;color:var(--text);padding:20px;font-size:1.1rem;line-height:2}
-    .testimonial-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
-    .testimonial-card{background:#fff;border-left:4px solid var(--accent);border-radius:15px;padding:20px;font-size:.95rem;box-shadow:0 4px 12px rgba(0,0,0,.05)}
     footer{background:#00897b;color:#fff;padding:40px 0;text-align:center}
-</style>
+  </style>
 </head>
 <body>
+  <header>
+    <div class="container" style="display:flex;justify-content:space-between;align-items:center;padding:15px 0;color:#fff;font-weight:700;background:var(--primary)}">
+      <span style="font-size:1.4rem">درخشان ارومیه</span>
+      <nav style="display:flex;gap:20px">
+        <a href="#prices" style="color:#fff;text-decoration:none">قیمت‌ها</a>
+        <a href="#contact" style="color:#fff;text-decoration:none">تماس</a>
+      </nav>
+    </div>
+  </header>
 
-<header class="fade">
-  <div class="container header-content">
-    <div style="font-weight:700;font-size:1.4rem;color:var(--accent)">درخشان ارومیه</div>
-    <nav>
-      <ul>
-        <li><a href="#prices">قیمت‌ها</a></li>
-        <li><a href="#gallery">گالری</a></li>
-        <li><a href="#importance">چرا بشوریم؟</a></li>
-        <li><a href="#reviews">نظرات</a></li>
-        <li><a href="#contact">تماس</a></li>
-      </ul>
-    </nav>
-  </div>
-</header>
+  <section class="hero">
+    <div>
+      <h2>مبل، تشک، فرش → مثل روز اولش کن!</h2>
+      <p>بدون جابجایی، با تضمین رضایت 💯٪؛ اگر خوشت نیومد پول نمی‌گیریم.</p>
+      <a href="#contact" class="cta-button">همین حالا تماس بگیر</a>
+    </div>
+  </section>
 
-<section class="hero fade">
-  <div>
-    <h2>مبل، تشک، فرش → مثل روز اولش کن!</h2>
-    <p>بدون جابجایی، با تضمین رضایت 💯٪؛ اگر خوشت نیومد پول نمی‌گیریم.</p>
-    <a href="#contact" class="cta-button">همین حالا تماس بگیر</a>
-  </div>
-</section>
-
-<section id="prices" class="fade">
-  <div class="container">
+  <section id="prices" class="container" style="padding:60px 20px">
     <h2 style="text-align:center;margin-bottom:40px">قیمت‌ها با تخفیف مخصوص این ماه</h2>
     <div class="price-table">
       <div class="price-item"><span>هر نفره مبل</span><span><span class="original">۱۲۵,۰۰۰</span> → <span class="final">۱۰۰,۰۰۰ تومان</span></span></div>
       <div class="price-item"><span>بالش بزرگ</span><span><span class="original">۶۰,۰۰۰</span> → <span class="final">۴۸,۰۰۰ تومان</span></span></div>
       <div class="price-item"><span>بالش کوچک</span><span><span class="original">۳۰,۰۰۰</span> → <span class="final">۲۴,۰۰۰ تومان</span></span></div>
-      <div class="price-item"><span>زیره نشیمن</span><span><span class="original">۸۰,۰۰۰</span> → <span class="final">۶۴,۰۰۰ تومان</span></span></div>
       <div class="price-item"><span>تشک دونفره</span><span><span class="original">۱,۰۰۰,۰۰۰</span> → <span class="final">۸۰۰,۰۰۰ تومان</span></span></div>
       <div class="price-item"><span>فرش هر متر مربع</span><span><span class="original">۵۰,۰۰۰</span> → <span class="final">۴۰,۰۰۰ تومان</span></span></div>
-      <div class="price-item"><span>مثال: فرش شش متری</span><span><span class="original">۳۰۰,۰۰۰</span> → <span class="final">۲۴۰,۰۰۰ تومان</span></span></div>
     </div>
-  </div>
-</section>
+  </section>
 
-<section id="gallery" class="fade">
-  <div class="container">
-    <h2 style="text-align:center;margin-bottom:20px">گالری واقعی ما</h2>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;">
-      <figure style="position:relative;border-radius:15px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,.08)">
-        <img src="https://i.postimg.cc/nz2268k0/3d013959-6596-4c50-89b5-3105ca979fc5.jpg" alt="مبل" style="width:100%;height:220px;object-fit:cover">
-        <span class="brand-glow">مبل‌شویی درخشان</span>
-      </figure>
-      <figure style="position:relative;border-radius:15px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,.08)">
-        <img src="https://i.postimg.cc/59PpgVjt/7293cb88-79a8-4a20-8ffb-31903168d762.jpg" alt="فرش" style="width:100%;height:220px;object-fit:cover">
-        <span class="brand-glow">مبل‌شویی درخشان</span>
-      </figure>
-      <figure style="position:relative;border-radius:15px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,.08)">
-        <img src="https://i.postimg.cc/tJgkbrvy/7a57b27f-eb11-4ea3-8c95-6c8b2254aa52.jpg" alt="تشک" style="width:100%;height:220px;object-fit:cover">
-        <span class="brand-glow">مبل‌شویی درخشان</span>
-      </figure>
-      <figure style="position:relative;border-radius:15px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,.08)">
-        <img src="https://i.postimg.cc/pr1ZLD3j/7ea0db6e-d9ea-49f7-8eaf-6fe9d0b0b97e.jpg" alt="بالش" style="width:100%;height:220px;object-fit:cover">
-        <span class="brand-glow">مبل‌شویی درخشان</span>
-      </figure>
-      <figure style="position:relative;border-radius:15px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,.08)">
-        <img src="https://i.postimg.cc/LsMV54Qx/62394e65-71c1-45d0-8c66-40c3702ca23b.jpg" alt="زیره" style="width:100%;height:220px;object-fit:cover">
-        <span class="brand-glow">مبل‌شویی درخشان</span>
-      </figure>
-      <figure style="position:relative;border-radius:15px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,.08)">
-        <img src="https://i.postimg.cc/KYrDMXdx/b98719fd-07c8-4c3c-9b5d-9c34110bb0c8.jpg" alt="مبلمان" style="width:100%;height:220px;object-fit:cover">
-        <span class="brand-glow">مبل‌شویی درخشان</span>
-      </figure>
-    </div>
-  </div>
-</section>
-
-<section id="importance" class="fade">
-  <div class="container">
-    <h2 style="text-align:center;margin-bottom:20px">چرا باید مبل، تشک و فرش را حرفه‌ای بشوییم؟</h2>
-    <div class="importance-scroll">
-      مبل و تشک خونه‌تون پر از کنه، گردوغبار و قارچه؛ اینا نه‌تنها بوی بد می‌دن، بلکه بچه‌هاتون رو هم آزار می‌دن.<br>
-      آب و شامپوی معمولی فقط سطح رو کمی پاک میکنه؛ ما با مواد نانو تا عمق تاروپود می‌ریم.<br>
-      خشک‌شدن زیر یک ساعت = بدون بو و کپک.<br>
-      صرفه‌جویی: یک شستشوی حرفه‌ای از تعویض یک فرش چند میلیونی جلوگیری می‌کنه.<br>
-      با هر سفارش یک بطری لکه‌بر نانو هدیه می‌گیرید.<br>
-      درخشان ۸ ساله در ارومیه؛ هزاران خانه اعتماد کردن.
-    </div>
-  </div>
-</section>
-
-<section id="reviews" class="fade">
-  <div class="container">
-    <h2 style="text-align:center;margin-bottom:30px">نظرات مشتریان واقعی</h2>
-    <div class="testimonial-grid">
-      <div class="testimonial-card">مبل ۸ نفره‌مون مثل روز اول شد؛ قیمت هم عالی بود. خانم رحیمی</div>
-      <div class="testimonial-card">فرش ۹ متری ۳۶۰ تومن شد؛ خشک‌شدنش زیر یک ساعت بود! آقای محمدی</div>
-      <div class="testimonial-card">بالش بزرگ ۴۸ تومن؛ ولی هدیه لکه‌برش عالی بود. خانم کریمی</div>
-      <div class="testimonial-card">تشک دونفره ۸۰۰ تومن؛ راضی نبودم پول ندادم. آقای علیزاده</div>
-      <div class="testimonial-card">بچه‌ام دیگر شب‌ها سرفه نمی‌کند. تشک عاری از کنه شد. خانم سبحانی</div>
-      <div class="testimonial-card">لکه قهوه روی مبل برق افتاد. واقعاً حرفه‌ای بودند. آقای رضایی</div>
-      <div class="testimonial-card">مبلمان چرمی‌مون بدون آسیب شد مثل روز اول. خانم جعفری</div>
-      <div class="testimonial-card">فرش ۱۲ متری ۴۸۰ تومن؛ قیمت شفاف و بدون پنهان‌کاری. آقای نوری</div>
-      <div class="testimonial-card">زیره نشیمن ۶۴ تومن؛ دیگر لغزش نداریم. خانم رستمی</div>
-      <div class="testimonial-card">سرعت کار و ادب تیم عالی بود. آقای حسینی</div>
-      <div class="testimonial-card">بوی سیگار از مبل کاملاً رفت. واقعاً ممنون. خانم عزیزی</div>
-      <div class="testimonial-card">فرش ابریشم بدون رنگ‌رفتگی تمیز شد. آقای غلامی</div>
-      <div class="testimonial-card">بالاتر از انتظارم بود. حتماً توصیه می‌کنم. خانم موسوی</div>
-      <div class="testimonial-card">مبل ۸ نفره کلاسیک بدون آب‌رفتگی شد نو. آقای رحمانی</div>
-      <div class="testimonial-card">خدمات ۲۴ ساعته واقعاً به دردسر نمی‌خورد. خانم کاظمی</div>
-      <div class="testimonial-card">قیمت‌ها روشن و بدون هزینه اضافه. آقای شریفی</div>
-      <div class="testimonial-card">تشک نوزاد بدون بو و ضدعفونی شد. خانم مهدوی</div>
-      <div class="testimonial-card">فرش دستباف بدون آسیب. آقای نجفی</div>
-      <div class="testimonial-card">در کمتر از ۲ ساعت تحویل گرفتیم. خانم کریمیان</div>
-      <div class="testimonial-card">هدیه لکه‌بر نانو ماندگار شد. آقای پورمحمد</div>
-      <div class="testimonial-card">باورم نشد اینقدر سریع و تمیز شد. خانم شاهی</div>
-      <div class="testimonial-card">تضمین رضایت واقعاً جدی است! آقای نادری</div>
-    </div>
-  </div>
-</section>
-
-<section id="contact" class="fade">
-  <div class="container">
-    <h2 style="text-align:center;margin-bottom:20px">تماس با درخشان</h2>
-    <p style="text-align:center;font-size:1.2rem;">
+  <section id="contact" class="container" style="padding:60px 20px;text-align:center">
+    <h2>تماس با درخشان</h2>
+    <p style="font-size:1.2rem;margin-bottom:20px">
       تلفن / واتساپ: ۰۹۳۷۴۳۷۱۲۹۶<br>
       تلفن / واتساپ: ۰۹۱۰۴۴۱۵۴۰۰<br>
-      ساعات: ۸ صبح تا ۱۲ شب، همه روزه (حتی تعطیل)<br>
+      ساعات: ۸ صبح تا ۱۲ شب، همه‌روزه<br>
       پوشش: تمام نقاط ارومیه – خدمات در محل
     </p>
-    <div style="text-align:center;margin-top:20px;">
-      <a href="https://wa.me/989374371296" class="cta-button">ارسال پیام در واتساپ</a>
+    <a href="https://wa.me/989374371296" class="cta-button">ارسال پیام در واتساپ</a>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div style="font-weight:700;font-size:1.3rem;color:var(--accent)">درخشان ارومیه</div>
+      <p>۸ سال تجربه • تضمین رضایت • تخفیف مخصوص این ماه</p>
+      <p style="font-size:.9rem;margin-top:15px">© ۲۰۲۴ تمامی حقوق محفوظ است</p>
     </div>
-  </div>
-</section>
-
-<footer class="fade">
-  <div class="container">
-    <div style="font-weight:700;font-size:1.3rem;color:var(--accent)">درخشان ارومیه</div>
-    <p>۸ سال تجربه • تضمین رضایت • تخفیف مخصوص این ماه</p>
-    <p style="font-size:.9rem;margin-top:15px">© ۲۰۲۴ تمامی حقوق محفوظ است</p>
-  </div>
-</footer>
-
-<script>
-document.addEventListener('DOMContentLoaded',()=>{
-    document.querySelectorAll('.fade').forEach(el=>el.classList.add('fadeIn'));
-});
-</script>
-
+  </footer>
 </body>
 </html>
