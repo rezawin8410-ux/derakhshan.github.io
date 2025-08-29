@@ -2,376 +2,180 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<title>پنل مدیریت پیشرفته</title>
+<title>پنل مدیریت – درخشان</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 <style>
-  :root {
-    --primary-color:#007bff;
-    --font-family:Tahoma;
-    --bg-color:#f8f9fa;
-  }
-  body{background:var(--bg-color);font-family:var(--font-family);}
-  .card{margin-bottom:1rem;}
-  #themeOptions label{margin-right:.5rem;}
-  canvas{max-width:100%;}
-  .draggable{cursor:grab;}
-  .ghost{opacity:.4}
+body{font-family:Tahoma;margin:0;padding:20px;background:#f5f5f5}
+h2{color:#00bfa5;margin-top:30px}
+label{display:block;margin:10px 0 5px;font-weight:700}
+input,textarea,select{width:100%;padding:8px;font-size:1rem;margin-bottom:10px;border:1px solid #ccc;border-radius:6px}
+button{background:#00bfa5;color:#fff;border:none;padding:10px 20px;border-radius:6px;cursor:pointer}
+.section{background:#fff;padding:20px;margin-bottom:20px;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,.1)}
 </style>
 </head>
 <body>
-
-<!-- LOGIN -->
-<div class="container mt-5" id="loginSection">
-  <div class="card shadow" style="max-width:400px;margin:auto">
-    <div class="card-body">
-      <h4 class="card-title text-center">ورود مدیر</h4>
-      <input type="password" id="password" class="form-control mb-3" placeholder="رمز عبور">
-      <button class="btn btn-primary w-100" onclick="login()">ورود</button>
-      <p id="loginError" class="text-danger mt-2"></p>
-    </div>
-  </div>
+<h1>پنل مدیریت – درخشان ارومیه</h1>
+<div class="section">
+  <h2>ورود</h2>
+  <input type="password" id="pass" placeholder="رمز عبور">
+  <button onclick="login()">ورود</button>
+  <p id="msg" style="color:red"></p>
 </div>
 
-<!-- ADMIN PANEL -->
-<div class="container-fluid mt-3 hidden" id="adminSection">
-  <h2 class="mb-3">پنل مدیریت پیشرفته</h2>
-
-  <!-- تب‌های مختلف -->
-  <ul class="nav nav-tabs" id="adminTabs" role="tablist">
-    <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-posts">پست‌ها</button></li>
-    <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-comments">نظرات</button></li>
-    <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-appearance">ظاهر سایت</button></li>
-    <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-seo">سئو</button></li>
-    <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-stats">آمار بازدید</button></li>
-    <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-backup">پشتیبان‌گیری</button></li>
-  </ul>
-
-  <div class="tab-content mt-3">
-    <!-- پست‌ها -->
-    <div class="tab-pane fade show active" id="tab-posts">
-      <div class="card">
-        <div class="card-header">افزودن / ویرایش پست</div>
-        <div class="card-body">
-          <input type="text" id="postTitle" class="form-control mb-2" placeholder="عنوان">
-          <textarea id="postContent" class="form-control mb-2" rows="4" placeholder="متن پست"></textarea>
-          <input type="file" id="postImage" accept="image/*" class="form-control mb-2">
-          <button class="btn btn-success" onclick="savePost()">ذخیره</button>
-          <button class="btn btn-secondary" onclick="cancelEdit()">لغو</button>
-        </div>
-      </div>
-
-      <div class="card mt-3">
-        <div class="card-header">لیست پست‌ها (Drag & Drop برای جابه‌جایی)</div>
-        <ul id="postsList" class="list-group list-group-flush"></ul>
-      </div>
-    </div>
-
-    <!-- نظرات -->
-    <div class="tab-pane fade" id="tab-comments">
-      <div id="commentsList"></div>
-    </div>
-
-    <!-- ظاهر سایت -->
-    <div class="tab-pane fade" id="tab-appearance">
-      <div class="card">
-        <div class="card-header">تنظیمات ظاهری</div>
-        <div class="card-body">
-          <label>تم رنگ سایت:
-            <select id="themeColor" class="form-select" onchange="applyLive()">
-              <option value="#007bff">آبی</option>
-              <option value="#28a745">سبز</option>
-              <option value="#dc3545">قرمز</option>
-              <option value="#212529">تیره</option>
-            </select>
-          </label><br>
-          <label>فونت:
-            <select id="themeFont" class="form-select" onchange="applyLive()">
-              <option value="Tahoma">Tahoma</option>
-              <option value="Arial">Arial</option>
-              <option value="Vazirmatn">Vazirmatn (Google Font)</option>
-            </select>
-          </label><br>
-          <label>عنوان سایت:
-            <input type="text" id="siteTitle" class="form-control" onkeyup="applyLive()">
-          </label><br>
-          <label>متن فوتر:
-            <input type="text" id="footerText" class="form-control" onkeyup="applyLive()">
-          </label>
-        </div>
-      </div>
-    </div>
-
-    <!-- سئو -->
-    <div class="tab-pane fade" id="tab-seo">
-      <div class="card">
-        <div class="card-header">تنظیمات سئو</div>
-        <div class="card-body">
-          <label>Meta Title:
-            <input type="text" id="metaTitle" class="form-control">
-          </label><br>
-          <label>Meta Description:
-            <textarea id="metaDesc" class="form-control" rows="3"></textarea>
-          </label><br>
-          <label>OG Image URL:
-            <input type="url" id="metaImage" class="form-control">
-          </label>
-          <button class="btn btn-primary mt-2" onclick="saveSEO()">ذخیره سئو</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- آمار -->
-    <div class="tab-pane fade" id="tab-stats">
-      <div class="card">
-        <div class="card-header">آمار بازدید</div>
-        <div class="card-body">
-          <canvas id="statsChart" height="120"></canvas>
-          <p id="totalViews"></p>
-        </div>
-      </div>
-    </div>
-
-    <!-- پشتیبان‌گیری -->
-    <div class="tab-pane fade" id="tab-backup">
-      <div class="card">
-        <div class="card-header">پشتیبان‌گیری / بازیابی</div>
-        <div class="card-body">
-          <button class="btn btn-outline-success" onclick="exportSettings()">دانلود فایل پشتیبان</button>
-          <hr>
-          <input type="file" id="importFile" class="form-control" onchange="importSettings(event)">
-        </div>
-      </div>
-    </div>
+<div id="panel" style="display:none">
+  <!-- متون اصلی -->
+  <div class="section">
+    <h2>متون اصلی صفحه</h2>
+    <label>عنوان سایت (هدر)</label><input id="siteTitle" placeholder="درخشان ارومیه">
+    <label>عنوان بزرگ (Hero)</label><input id="heroTitle" placeholder="مثل روز اولش کن!">
+    <label>زیرنویس Hero</label><textarea id="heroSubtitle" rows="2"></textarea>
+    <label>عنوان بنر تخفیف</label><input id="bannerTitle" placeholder="🎁 امتیاز …">
+    <label>متن بنر تخفیف</label><textarea id="bannerText" rows="3"></textarea>
+    <label>متن بخش چرا بشوریم؟</label><textarea id="importance" rows="6"></textarea>
+    <label>متن فوتر</label><input id="footerText" placeholder="۸ سال تجربه …">
+    <button onclick="saveTexts()">ذخیره متون</button>
   </div>
 
-  <button class="btn btn-danger mt-4" onclick="logout()">خروج</button>
+  <!-- قیمت‌ها -->
+  <div class="section">
+    <h2>قیمت‌ها</h2>
+    <div id="priceList"></div>
+    <button onclick="addPrice()">افزودن قلم جدید</button>
+  </div>
+
+  <!-- گالری تصاویر -->
+  <div class="section">
+    <h2>تصاویر گالری</h2>
+    <div id="imgList"></div>
+    <input type="file" id="imgFile" accept="image/*" onchange="addImage()">
+  </div>
+
+  <!-- نظرات -->
+  <div class="section">
+    <h2>نظرات</h2>
+    <div id="revList"></div>
+  </div>
+
+  <button onclick="logout()">خروج</button>
 </div>
 
-<!-- JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-/* ---------- LOGIN ---------- */
-const PASSWORD = "rez@8410"; // رمز جدید
+const PASS='admin1234';
 function login(){
-  if(document.getElementById('password').value === PASSWORD){
+  if(document.getElementById('pass').value===PASS){
     localStorage.setItem('isAdmin','true');
-    location.reload();
+    document.getElementById('panel').style.display='block';
+    loadAll();
   }else{
-    document.getElementById('loginError').textContent='رمز اشتباه است';
+    document.getElementById('msg').textContent='رمز اشتباه است';
   }
 }
 function logout(){
   localStorage.removeItem('isAdmin');
-  location.href='index.html';
+  location.reload();
 }
-if(localStorage.getItem('isAdmin')!=='true'){
-  document.getElementById('loginSection').classList.remove('hidden');
-  document.getElementById('adminSection').classList.add('hidden');
-}else{
-  document.getElementById('loginSection').classList.add('hidden');
-  document.getElementById('adminSection').classList.remove('hidden');
-}
-
-/* ---------- POSTS ---------- */
-let editIndex=null;
-function loadPosts(){
-  const posts=JSON.parse(localStorage.getItem('posts'))||[];
-  const list=document.getElementById('postsList');
-  list.innerHTML='';
-  posts.forEach((p,i)=>{
-    list.innerHTML+=`
-      <li class="list-group-item draggable d-flex justify-content-between align-items-center">
-        <span>${p.title}</span>
-        <div>
-          <button class="btn btn-sm btn-outline-primary" onclick="editPost(${i})">ویرایش</button>
-          <button class="btn btn-sm btn-outline-danger" onclick="deletePost(${i})">حذف</button>
-        </div>
-      </li>`;
-  });
-  Sortable.create(list,{onEnd:saveOrder});
-}
-function saveOrder(evt){
-  const posts=JSON.parse(localStorage.getItem('posts'))||[];
-  const newPosts=[...posts];
-  const [moved]=newPosts.splice(evt.oldIndex,1);
-  newPosts.splice(evt.newIndex,0,moved);
-  localStorage.setItem('posts',JSON.stringify(newPosts));
-}
-function savePost(){
-  const title=document.getElementById('postTitle').value.trim();
-  const content=document.getElementById('postContent').value.trim();
-  if(!title||!content) return alert("عنوان و متن الزامی است");
-  const file=document.getElementById('postImage').files[0];
-  const posts=JSON.parse(localStorage.getItem('posts'))||[];
-  if(file){
-    const reader=new FileReader();
-    reader.onload=e=>{
-      const image=e.target.result;
-      saveOrUpdate({title,content,image,views:0});
-    };
-    reader.readAsDataURL(file);
-  }else{
-    saveOrUpdate({title,content,image:'',views:0});
-  }
-}
-function saveOrUpdate(obj){
-  const posts=JSON.parse(localStorage.getItem('posts'))||[];
-  if(editIndex===null){
-    posts.push(obj);
-  }else{
-    obj.views=posts[editIndex].views||0;
-    posts[editIndex]=obj;
-    editIndex=null;
-  }
-  localStorage.setItem('posts',JSON.stringify(posts));
-  loadPosts();
-  cancelEdit();
-}
-function editPost(i){
-  const posts=JSON.parse(localStorage.getItem('posts'))||[];
-  document.getElementById('postTitle').value=posts[i].title;
-  document.getElementById('postContent').value=posts[i].content;
-  editIndex=i;
-}
-function cancelEdit(){
-  editIndex=null;
-  document.getElementById('postTitle').value='';
-  document.getElementById('postContent').value='';
-  document.getElementById('postImage').value='';
-}
-function deletePost(i){
-  if(confirm('آیا مطمئنید؟')){
-    const posts=JSON.parse(localStorage.getItem('posts'))||[];
-    posts.splice(i,1);
-    localStorage.setItem('posts',JSON.stringify(posts));
-    loadPosts();
-  }
-}
-
-/* ---------- COMMENTS ---------- */
-function loadComments(){
-  const comments=JSON.parse(localStorage.getItem('comments'))||[];
-  const list=document.getElementById('commentsList');
-  list.innerHTML='';
-  comments.forEach((c,i)=>{
-    list.innerHTML+=`
-      <div class="card mb-2">
-        <div class="card-body">
-          <h6 class="card-subtitle mb-1">${c.name} <small class="text-muted">${c.date}</small></h6>
-          <p class="card-text">${c.text}</p>
-          ${c.reply?`<p class="text-success">پاسخ: ${c.reply}</p>`:''}
-          <div class="mt-2">
-            <button class="btn btn-sm btn-success" onclick="approveComment(${i},true)">تایید</button>
-            <button class="btn btn-sm btn-warning" onclick="approveComment(${i},false)">رد</button>
-            <button class="btn btn-sm btn-info" onclick="replyComment(${i})">پاسخ سریع</button>
-          </div>
-        </div>
+/* بارگذاری داده‌ها */
+function loadAll(){
+  /* متون */
+  const t=JSON.parse(localStorage.getItem('siteTexts'))||{};
+  ['siteTitle','heroTitle','heroSubtitle','bannerTitle','bannerText','importance','footerText']
+    .forEach(id=>{document.getElementById(id).value=t[id]||'';});
+  /* قیمت‌ها */
+  const p=JSON.parse(localStorage.getItem('prices'))||[];
+  const plc=document.getElementById('priceList'); plc.innerHTML='';
+  p.forEach((pr,i)=>{
+    plc.innerHTML+=`
+      <div style="margin-bottom:8px">
+        <input value="${pr.name}" onchange="savePrice(${i},'name',this.value)" placeholder="نام">
+        <input type="number" value="${pr.original}" onchange="savePrice(${i},'original',this.value)" placeholder="قیمت اصلی">
+        <input type="number" value="${pr.final}" onchange="savePrice(${i},'final',this.value)" placeholder="قیمت با تخفیف">
+        <button onclick="removePrice(${i})">حذف</button>
       </div>`;
   });
-}
-function approveComment(i,status){
-  const comments=JSON.parse(localStorage.getItem('comments'))||[];
-  comments[i].approved=status;
-  localStorage.setItem('comments',JSON.stringify(comments));
-  loadComments();
-}
-function replyComment(i){
-  const reply=prompt("پاسخ خود را بنویسید:");
-  if(reply){
-    const comments=JSON.parse(localStorage.getItem('comments'))||[];
-    comments[i].reply=reply;
-    localStorage.setItem('comments',JSON.stringify(comments));
-    loadComments();
-  }
-}
-
-/* ---------- APPEARANCE ---------- */
-function loadAppearance(){
-  const settings=JSON.parse(localStorage.getItem('siteSettings'))||{};
-  document.getElementById('themeColor').value=settings.color||'#007bff';
-  document.getElementById('themeFont').value=settings.font||'Tahoma';
-  document.getElementById('siteTitle').value=settings.title||'وب‌سایت من';
-  document.getElementById('footerText').value=settings.footer||'© 2025';
-}
-function applyLive(){
-  const settings={
-    color:document.getElementById('themeColor').value,
-    font:document.getElementById('themeFont').value,
-    title:document.getElementById('siteTitle').value,
-    footer:document.getElementById('footerText').value
-  };
-  localStorage.setItem('siteSettings',JSON.stringify(settings));
-  document.documentElement.style.setProperty('--primary-color',settings.color);
-  document.documentElement.style.setProperty('--font-family',settings.font);
-  document.title=settings.title;
-}
-loadAppearance(); applyLive();
-
-/* ---------- SEO ---------- */
-function loadSEO(){
-  const seo=JSON.parse(localStorage.getItem('siteSEO'))||{};
-  document.getElementById('metaTitle').value=seo.title||'';
-  document.getElementById('metaDesc').value=seo.desc||'';
-  document.getElementById('metaImage').value=seo.image||'';
-}
-function saveSEO(){
-  const seo={
-    title:document.getElementById('metaTitle').value,
-    desc:document.getElementById('metaDesc').value,
-    image:document.getElementById('metaImage').value
-  };
-  localStorage.setItem('siteSEO',JSON.stringify(seo));
-  alert('تنظیمات سئو ذخیره شد');
-}
-loadSEO();
-
-/* ---------- STATS ---------- */
-function loadStats(){
-  const posts=JSON.parse(localStorage.getItem('posts'))||[];
-  const labels=posts.map(p=>p.title);
-  const data=posts.map(p=>p.views||0);
-  const total=data.reduce((a,b)=>a+b,0);
-  document.getElementById('totalViews').textContent=`کل بازدیدها: ${total}`;
-  new Chart(document.getElementById('statsChart'),{
-    type:'bar',
-    data:{labels,datasets:[{label:'بازدید',data,backgroundColor:'#007bff'}]}
+  /* تصاویر */
+  const imgs=JSON.parse(localStorage.getItem('galleryImages'))||[];
+  const il=document.getElementById('imgList'); il.innerHTML='';
+  imgs.forEach((src,i)=>{
+    il.innerHTML+=`<div>
+      <img src="${src}" style="width:100px;height:60px;object-fit:cover;margin:5px">
+      <button onclick="removeImg(${i})">حذف</button>
+    </div>`;
+  });
+  /* نظرات */
+  const revs=JSON.parse(localStorage.getItem('comments'))||[];
+  const rl=document.getElementById('revList'); rl.innerHTML='';
+  revs.forEach((r,i)=>{
+    rl.innerHTML+=`<div>
+      <strong>${r.name}</strong><br>
+      <textarea rows="2" onblur="saveRev(${i},this.value)">${r.text}</textarea>
+      <label><input type="checkbox" ${r.approved?'checked':''} onchange="toggleRev(${i})"> تایید</label>
+      <button onclick="delRev(${i})">حذف</button>
+    </div>`;
   });
 }
-
-/* ---------- BACKUP ---------- */
-function exportSettings(){
-  const obj={
-    posts:JSON.parse(localStorage.getItem('posts'))||[],
-    comments:JSON.parse(localStorage.getItem('comments'))||[],
-    siteSettings:JSON.parse(localStorage.getItem('siteSettings'))||{},
-    siteSEO:JSON.parse(localStorage.getItem('siteSEO'))||{}
-  };
-  const blob=new Blob([JSON.stringify(obj,null,2)],{type:'application/json'});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');
-  a.href=url; a.download='backup.json'; a.click();
+function saveTexts(){
+  const obj={};
+  ['siteTitle','heroTitle','heroSubtitle','bannerTitle','bannerText','importance','footerText']
+    .forEach(id=>obj[id]=document.getElementById(id).value);
+  localStorage.setItem('siteTexts',JSON.stringify(obj));
+  alert('ذخیره شد');
 }
-function importSettings(evt){
-  const file=evt.target.files[0];
-  if(!file) return;
+function addPrice(){
+  const p=JSON.parse(localStorage.getItem('prices'))||[];
+  p.push({name:'',original:0,final:0});
+  localStorage.setItem('prices',JSON.stringify(p));
+  loadAll();
+}
+function savePrice(i,k,v){
+  const p=JSON.parse(localStorage.getItem('prices'));
+  p[i][k]=k==='name'?v:Number(v);
+  localStorage.setItem('prices',JSON.stringify(p));
+}
+function removePrice(i){
+  const p=JSON.parse(localStorage.getItem('prices'));
+  p.splice(i,1);
+  localStorage.setItem('prices',JSON.stringify(p));
+  loadAll();
+}
+function addImage(){
+  const f=document.getElementById('imgFile').files[0];
+  if(!f) return;
   const reader=new FileReader();
   reader.onload=e=>{
-    const data=JSON.parse(e.target.result);
-    if(data.posts) localStorage.setItem('posts',JSON.stringify(data.posts));
-    if(data.comments) localStorage.setItem('comments',JSON.stringify(data.comments));
-    if(data.siteSettings) localStorage.setItem('siteSettings',JSON.stringify(data.siteSettings));
-    if(data.siteSEO) localStorage.setItem('siteSEO',JSON.stringify(data.siteSEO));
-    alert('بازیابی انجام شد'); location.reload();
+    const imgs=JSON.parse(localStorage.getItem('galleryImages'))||[];
+    imgs.push(e.target.result);
+    localStorage.setItem('galleryImages',JSON.stringify(imgs));
+    loadAll();
   };
-  reader.readAsText(file);
+  reader.readAsDataURL(f);
 }
-
-/* ---------- INIT ---------- */
-loadPosts(); loadComments(); loadStats();
+function removeImg(i){
+  const imgs=JSON.parse(localStorage.getItem('galleryImages'));
+  imgs.splice(i,1);
+  localStorage.setItem('galleryImages',JSON.stringify(imgs));
+  loadAll();
+}
+function saveRev(i,val){
+  const revs=JSON.parse(localStorage.getItem('comments'));
+  revs[i].text=val;
+  localStorage.setItem('comments',JSON.stringify(revs));
+}
+function toggleRev(i){
+  const revs=JSON.parse(localStorage.getItem('comments'));
+  revs[i].approved=!revs[i].approved;
+  localStorage.setItem('comments',JSON.stringify(revs));
+}
+function delRev(i){
+  const revs=JSON.parse(localStorage.getItem('comments'));
+  revs.splice(i,1);
+  localStorage.setItem('comments',JSON.stringify(revs));
+  loadAll();
+}
+/* چک ورود اولیه */
+if(localStorage.getItem('isAdmin')==='true'){
+  document.getElementById('panel').style.display='block';
+  loadAll();
+}
 </script>
 </body>
 </html>
