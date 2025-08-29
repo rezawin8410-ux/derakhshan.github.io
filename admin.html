@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>پنل مدیریت</title>
+    <style>
+        body { font-family: Tahoma; background: #f5f5f5; margin: 0; padding: 20px; }
+        .login-form, .admin-panel { background: white; padding: 20px; border-radius: 5px; max-width: 500px; margin: auto; }
+        input, textarea { width: 100%; padding: 10px; margin: 5px 0; }
+        button { background: #007bff; color: white; padding: 10px; border: none; cursor: pointer; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<!-- فرم ورود -->
+<div class="login-form" id="loginForm">
+    <h2>ورود مدیر</h2>
+    <input type="password" id="password" placeholder="رمز عبور">
+    <button onclick="login()">ورود</button>
+    <p id="error" style="color: red;"></p>
+</div>
+
+<!-- پنل مدیریت -->
+<div class="admin-panel hidden" id="adminPanel">
+    <h2>پنل مدیریت</h2>
+
+    <h3>افزودن پست جدید</h3>
+    <input type="text" id="postTitle" placeholder="عنوان پست">
+    <textarea id="postContent" placeholder="متن پست" rows="5"></textarea>
+    <button onclick="addPost()">افزودن پست</button>
+
+    <h3>پست‌ها</h3>
+    <div id="postsList"></div>
+
+    <h3>نظرات</h3>
+    <div id="commentsList"></div>
+
+    <button onclick="logout()">خروج</button>
+</div>
+
+<script>
+    const correctPassword = "admin123"; // رمز مدیر
+
+    function login() {
+        const pass = document.getElementById('password').value;
+        if (pass === correctPassword) {
+            localStorage.setItem('isAdmin', 'true');
+            document.getElementById('loginForm').classList.add('hidden');
+            document.getElementById('adminPanel').classList.remove('hidden');
+            loadAdminPanel();
+        } else {
+            document.getElementById('error').innerText = "رمز اشتباه است!";
+        }
+    }
+
+    function logout() {
+        localStorage.removeItem('isAdmin');
+        location.reload();
+    }
+
+    function loadAdminPanel() {
+        loadPostsAdmin();
+        loadComments();
+    }
+
+    function addPost() {
+        const title = document.getElementById('postTitle').value;
+        const content = document.getElementById('postContent').value;
+        if (!title || !content) return alert("عنوان و متن پست را وارد کنید!");
+
+        const posts = JSON.parse(localStorage.getItem('posts')) || [];
+        posts.push({ title, content, views: 0 });
+        localStorage.setItem('posts', JSON.stringify(posts));
+        loadPostsAdmin();
+    }
+
+    function deletePost(index) {
+        const posts = JSON.parse(localStorage.getItem('posts')) || [];
+        posts.splice(index, 1);
+        localStorage.setItem('posts', JSON.stringify(posts));
+        loadPostsAdmin();
+    }
+
+    function loadPostsAdmin() {
+        const posts = JSON.parse(localStorage.getItem('posts')) || [];
+        const list = document.getElementById('postsList');
+        list.innerHTML = '';
+
+        posts.forEach((post, index) => {
+            list.innerHTML += `
+                <div style="border: 1px solid #ddd; padding: 10px; margin: 5px 0;">
+                    <strong>${post.title}</strong> - بازدید: ${post.views || 0}
+                    <button onclick="deletePost(${index})" style="background: red; color: white; float: left;">حذف</button>
+                </div>
+            `;
+        });
+    }
+
+    function loadComments() {
+        const comments = JSON.parse(localStorage.getItem('comments')) || [];
+        const list = document.getElementById('commentsList');
+        list.innerHTML = '';
+
+        comments.forEach((comment, index) => {
+            list.innerHTML += `
+                <div style="border: 1px solid #ddd; padding: 10px; margin: 5px 0;">
+                    <strong>${comment.name}</strong>: ${comment.text}
+                    <br>
+                    <small>${comment.date}</small>
+                    <button onclick="replyToComment(${index})">پاسخ</button>
+                </div>
+            `;
+        });
+    }
+
+    function replyToComment(index) {
+        const reply = prompt("پاسخ خود را بنویسید:");
+        if (!reply) return;
+
+        const comments = JSON.parse(localStorage.getItem('comments')) || [];
+        comments[index].reply = reply;
+        localStorage.setItem('comments', JSON.stringify(comments));
+        loadComments();
+    }
+
+    // بررسی وضعیت ورود
+    if (localStorage.getItem('isAdmin') === 'true') {
+        document.getElementById('loginForm').classList.add('hidden');
+        document.getElementById('adminPanel').classList.remove('hidden');
+        loadAdminPanel();
+    }
+</script>
+
+</body>
+</html>
