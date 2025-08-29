@@ -2,69 +2,131 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<title>پنل مدیریت – درخشان</title>
+<title>پنل مدیریت پیشرفته – درخشان</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+<!-- Quill WYSIWYG -->
+<link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
 <style>
-body{font-family:Tahoma;margin:0;padding:20px;background:#f5f5f5}
-h2{color:#00bfa5;margin-top:30px}
-label{display:block;margin:10px 0 5px;font-weight:700}
-input,textarea,select{width:100%;padding:8px;font-size:1rem;margin-bottom:10px;border:1px solid #ccc;border-radius:6px}
-button{background:#00bfa5;color:#fff;border:none;padding:10px 20px;border-radius:6px;cursor:pointer}
-.section{background:#fff;padding:20px;margin-bottom:20px;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,.1)}
+body{background:#f5f5f5;font-family:Tahoma}
+.section{background:#fff;border-radius:10px;padding:20px;margin-bottom:25px}
+h2{color:#00bfa5;margin-bottom:15px}
+label{font-weight:700}
+.ql-container{min-height:150px}
+.preview-box img{max-width:100%;border-radius:8px;margin:5px}
 </style>
 </head>
 <body>
-<h1>پنل مدیریت – درخشان ارومیه</h1>
-<div class="section">
-  <h2>ورود</h2>
-  <input type="password" id="pass" placeholder="رمز عبور">
-  <button onclick="login()">ورود</button>
-  <p id="msg" style="color:red"></p>
+<div class="container-fluid mt-3">
+  <h1 class="text-center mb-4">پنل مدیریت پیشرفته – درخشان</h1>
+
+  <!-- ورود -->
+  <div id="loginBox" class="section" style="max-width:400px;margin:auto">
+    <h2>ورود مدیر</h2>
+    <input type="password" id="pass" class="form-control mb-2" placeholder="رمز عبور">
+    <button class="btn btn-success w-100" onclick="login()">ورود</button>
+    <p id="msg" class="text-danger mt-2"></p>
+  </div>
+
+  <!-- پنل کامل -->
+  <div id="panel" style="display:none">
+
+    <!-- متون اصلی -->
+    <div class="section">
+      <h2>متون اصلی صفحه</h2>
+      <div class="row">
+        <div class="col-md-4"><label>عنوان سایت</label><input id="txt_siteTitle" class="form-control"></div>
+        <div class="col-md-4"><label>Hero Title</label><input id="txt_heroTitle" class="form-control"></div>
+        <div class="col-md-4"><label>Hero Subtitle</label><input id="txt_heroSubtitle" class="form-control"></div>
+      </div>
+      <label>بنر تخفیف Title</label><input id="txt_bannerTitle" class="form-control">
+      <label>متن بنر تخفیف</label><textarea id="txt_bannerText" class="form-control" rows="3"></textarea>
+      <label>متن بخش «چرا بشوریم؟»</label><div id="editor_importance" class="mb-2"></div>
+      <label>متن فوتر</label><input id="txt_footerText" class="form-control">
+      <button class="btn btn-primary mt-2" onclick="saveTexts()">ذخیره متون</button>
+    </div>
+
+    <!-- قیمت‌ها -->
+    <div class="section">
+      <h2>قیمت‌ها</h2>
+      <div id="priceList"></div>
+      <button class="btn btn-sm btn-outline-success" onclick="addPriceRow()">+ افزودن قلم</button>
+    </div>
+
+    <!-- اسلایدر -->
+    <div class="section">
+      <h2>مدیریت اسلایدر / بنر اصلی</h2>
+      <div id="sliderList"></div>
+      <input type="file" class="form-control w-auto d-inline-block" id="sliderFile" accept="image/*" onchange="addSliderImage()">
+      <button class="btn btn-sm btn-outline-info ms-2" onclick="addSlideByUrl()">افزودن با URL</button>
+    </div>
+
+    <!-- گالری -->
+    <div class="section">
+      <h2>گالری تصاویر صفحه اصلی</h2>
+      <div id="galleryList" class="row g-2"></div>
+      <input type="file" class="form-control w-auto d-inline-block" id="galleryFile" accept="image/*" multiple onchange="addGalleryImages(event)">
+    </div>
+
+    <!-- نظرات -->
+    <div class="section">
+      <h2>نظرات مشتریان</h2>
+      <div id="reviewList"></div>
+    </div>
+
+    <!-- سئو -->
+    <div class="section">
+      <h2>تنظیمات سئو صفحه اصلی</h2>
+      <label>Meta Title</label><input id="seo_title" class="form-control">
+      <label>Meta Description</label><textarea id="seo_desc" class="form-control" rows="2"></textarea>
+      <label>Meta Keywords</label><input id="seo_keywords" class="form-control" placeholder="کلمات با , جدا شوند">
+      <label>OG Image URL</label><input id="seo_image" class="form-control">
+      <button class="btn btn-primary mt-2" onclick="saveSEO()">ذخیره سئو</button>
+    </div>
+
+    <!-- تم رنگی -->
+    <div class="section">
+      <h2>تم رنگی</h2>
+      <div class="row">
+        <div class="col-md-3"><label>رنگ اصلی</label><input type="color" id="theme_primary" class="form-control"></div>
+        <div class="col-md-3"><label>رنگ تأکید</label><input type="color" id="theme_accent" class="form-control"></div>
+        <div class="col-md-3"><label>رنگ متن</label><input type="color" id="theme_text" class="form-control"></div>
+        <div class="col-md-3"><label>رنگ پس‌زمینه</label><input type="color" id="theme_bg" class="form-control"></div>
+      </div>
+      <button class="btn btn-primary mt-2" onclick="saveTheme()">ذخیره تم</button>
+    </div>
+
+    <!-- بک‌آپ و بازگردانی -->
+    <div class="section">
+      <h2>پشتیبان‌گیری / بازگردانی</h2>
+      <button class="btn btn-success" onclick="exportBackup()">دانلود فایل پشتیبان</button>
+      <input type="file" class="form-control mt-2" accept=".json" onchange="importBackup(event)">
+    </div>
+
+    <!-- لاگ فعالیت -->
+    <div class="section">
+      <h2>لاگ فعالیت‌ها</h2>
+      <button class="btn btn-sm btn-info mb-2" onclick="showLog()">نمایش لاگ</button>
+      <pre id="logBox" style="max-height:200px;overflow:auto;background:#f9f9f9;padding:10px;border-radius:5px;display:none"></pre>
+      <button class="btn btn-sm btn-danger" onclick="clearLog()">پاک کردن لاگ</button>
+    </div>
+
+    <button class="btn btn-danger" onclick="logout()">خروج</button>
+  </div>
 </div>
 
-<div id="panel" style="display:none">
-  <!-- متون اصلی -->
-  <div class="section">
-    <h2>متون اصلی صفحه</h2>
-    <label>عنوان سایت (هدر)</label><input id="siteTitle" placeholder="درخشان ارومیه">
-    <label>عنوان بزرگ (Hero)</label><input id="heroTitle" placeholder="مثل روز اولش کن!">
-    <label>زیرنویس Hero</label><textarea id="heroSubtitle" rows="2"></textarea>
-    <label>عنوان بنر تخفیف</label><input id="bannerTitle" placeholder="🎁 امتیاز …">
-    <label>متن بنر تخفیف</label><textarea id="bannerText" rows="3"></textarea>
-    <label>متن بخش چرا بشوریم؟</label><textarea id="importance" rows="6"></textarea>
-    <label>متن فوتر</label><input id="footerText" placeholder="۸ سال تجربه …">
-    <button onclick="saveTexts()">ذخیره متون</button>
-  </div>
-
-  <!-- قیمت‌ها -->
-  <div class="section">
-    <h2>قیمت‌ها</h2>
-    <div id="priceList"></div>
-    <button onclick="addPrice()">افزودن قلم جدید</button>
-  </div>
-
-  <!-- گالری تصاویر -->
-  <div class="section">
-    <h2>تصاویر گالری</h2>
-    <div id="imgList"></div>
-    <input type="file" id="imgFile" accept="image/*" onchange="addImage()">
-  </div>
-
-  <!-- نظرات -->
-  <div class="section">
-    <h2>نظرات</h2>
-    <div id="revList"></div>
-  </div>
-
-  <button onclick="logout()">خروج</button>
-</div>
-
+<!-- Scripts -->
+<script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
 <script>
-const PASS='admin1234';
+/* ---------- Login ---------- */
+const PASSWORD='admin1234';
 function login(){
-  if(document.getElementById('pass').value===PASS){
+  if(document.getElementById('pass').value===PASSWORD){
     localStorage.setItem('isAdmin','true');
+    document.getElementById('loginBox').style.display='none';
     document.getElementById('panel').style.display='block';
+    initQuill();
     loadAll();
   }else{
     document.getElementById('msg').textContent='رمز اشتباه است';
@@ -74,107 +136,258 @@ function logout(){
   localStorage.removeItem('isAdmin');
   location.reload();
 }
-/* بارگذاری داده‌ها */
+if(localStorage.getItem('isAdmin')==='true'){
+  document.getElementById('loginBox').style.display='none';
+  document.getElementById('panel').style.display='block';
+  initQuill();
+  loadAll();
+}
+
+/* ---------- Quill WYSIWYG ---------- */
+let quillImp;
+function initQuill(){
+  if(window.quillImp) return;
+  quillImp = new Quill('#editor_importance',{theme:'snow'});
+}
+
+/* ---------- Load All ---------- */
 function loadAll(){
   /* متون */
   const t=JSON.parse(localStorage.getItem('siteTexts'))||{};
-  ['siteTitle','heroTitle','heroSubtitle','bannerTitle','bannerText','importance','footerText']
-    .forEach(id=>{document.getElementById(id).value=t[id]||'';});
+  ['siteTitle','heroTitle','heroSubtitle','bannerTitle','bannerText','footerText'].forEach(k=>{
+    document.getElementById('txt_'+k).value=t[k]||'';
+  });
+  if(t.importance) quillImp.root.innerHTML=t.importance;
+
   /* قیمت‌ها */
-  const p=JSON.parse(localStorage.getItem('prices'))||[];
-  const plc=document.getElementById('priceList'); plc.innerHTML='';
+  const p=JSON.parse(localStorage.getItem('prices'))||[
+    {name:'هر نفره مبل',original:125000,final:100000},
+    {name:'صندلی غذاخوری',original:80000,final:65000},
+    {name:'بالش بزرگ',original:60000,final:48000},
+    {name:'بالش کوچک',original:30000,final:24000},
+    {name:'تشک زیره نشیمن مبل',original:80000,final:64000},
+    {name:'تشک خوشخواب دونفره',original:1000000,final:800000},
+    {name:'فرش هر متر مربع',original:50000,final:40000}
+  ];
+  const pl=document.getElementById('priceList'); pl.innerHTML='';
   p.forEach((pr,i)=>{
-    plc.innerHTML+=`
-      <div style="margin-bottom:8px">
-        <input value="${pr.name}" onchange="savePrice(${i},'name',this.value)" placeholder="نام">
-        <input type="number" value="${pr.original}" onchange="savePrice(${i},'original',this.value)" placeholder="قیمت اصلی">
-        <input type="number" value="${pr.final}" onchange="savePrice(${i},'final',this.value)" placeholder="قیمت با تخفیف">
-        <button onclick="removePrice(${i})">حذف</button>
+    pl.innerHTML+=`
+      <div class="row mb-2">
+        <div class="col-md-5"><input class="form-control" value="${pr.name}" onchange="savePrice(${i},'name',this.value)"></div>
+        <div class="col-md-3"><input type="number" class="form-control" value="${pr.original}" onchange="savePrice(${i},'original',this.value)"></div>
+        <div class="col-md-3"><input type="number" class="form-control" value="${pr.final}" onchange="savePrice(${i},'final',this.value)"></div>
+        <div class="col-md-1"><button class="btn btn-danger btn-sm" onclick="removePrice(${i})">×</button></div>
       </div>`;
   });
-  /* تصاویر */
-  const imgs=JSON.parse(localStorage.getItem('galleryImages'))||[];
-  const il=document.getElementById('imgList'); il.innerHTML='';
-  imgs.forEach((src,i)=>{
-    il.innerHTML+=`<div>
-      <img src="${src}" style="width:100px;height:60px;object-fit:cover;margin:5px">
-      <button onclick="removeImg(${i})">حذف</button>
-    </div>`;
+
+  /* اسلایدر */
+  const s=JSON.parse(localStorage.getItem('sliderImages'))||[];
+  const sl=document.getElementById('sliderList'); sl.innerHTML='';
+  s.forEach((img,i)=>{
+    sl.innerHTML+=`
+      <div class="preview-box mb-2">
+        <img src="${img}">
+        <button class="btn btn-danger btn-sm" onclick="removeSlider(${i})">حذف</button>
+      </div>`;
   });
+
+  /* گالری */
+  const g=JSON.parse(localStorage.getItem('galleryImages'))||[];
+  const gl=document.getElementById('galleryList'); gl.innerHTML='';
+  g.forEach((img,i)=>{
+    gl.innerHTML+=`
+      <div class="col-4 col-md-2">
+        <img src="${img}" class="img-fluid rounded">
+        <button class="btn btn-danger btn-sm w-100 mt-1" onclick="removeGallery(${i})">×</button>
+      </div>`;
+  });
+
   /* نظرات */
-  const revs=JSON.parse(localStorage.getItem('comments'))||[];
-  const rl=document.getElementById('revList'); rl.innerHTML='';
-  revs.forEach((r,i)=>{
-    rl.innerHTML+=`<div>
-      <strong>${r.name}</strong><br>
-      <textarea rows="2" onblur="saveRev(${i},this.value)">${r.text}</textarea>
-      <label><input type="checkbox" ${r.approved?'checked':''} onchange="toggleRev(${i})"> تایید</label>
-      <button onclick="delRev(${i})">حذف</button>
-    </div>`;
+  const r=JSON.parse(localStorage.getItem('comments'))||[];
+  const rl=document.getElementById('reviewList'); rl.innerHTML='';
+  r.forEach((rev,i)=>{
+    rl.innerHTML+=`
+      <div class="mb-2">
+        <input class="form-control mb-1" value="${rev.name}" onchange="saveReview(${i},'name',this.value)" placeholder="نام">
+        <textarea class="form-control mb-1" rows="2" onchange="saveReview(${i},'text',this.value)">${rev.text}</textarea>
+        <label><input type="checkbox" ${rev.approved?'checked':''} onchange="saveReview(${i},'approved',this.checked)"> تایید</label>
+        <button class="btn btn-danger btn-sm ms-2" onclick="removeReview(${i})">حذف</button>
+      </div>`;
   });
+
+  /* سئو */
+  const seo=JSON.parse(localStorage.getItem('siteSEO'))||{};
+  document.getElementById('seo_title').value=seo.title||'';
+  document.getElementById('seo_desc').value=seo.desc||'';
+  document.getElementById('seo_keywords').value=seo.keywords||'';
+  document.getElementById('seo_image').value=seo.image||'';
+
+  /* تم رنگی */
+  const th=JSON.parse(localStorage.getItem('siteTheme'))||{};
+  document.getElementById('theme_primary').value=th.primary||'#00bfa5';
+  document.getElementById('theme_accent').value=th.accent||'#ff6f00';
+  document.getElementById('theme_text').value=th.text||'#004d40';
+  document.getElementById('theme_bg').value=th.bg||'#e0f7fa';
 }
+loadAll();
+
+/* ---------- Save Functions ---------- */
 function saveTexts(){
   const obj={};
-  ['siteTitle','heroTitle','heroSubtitle','bannerTitle','bannerText','importance','footerText']
-    .forEach(id=>obj[id]=document.getElementById(id).value);
+  ['siteTitle','heroTitle','heroSubtitle','bannerTitle','bannerText','footerText'].forEach(k=>obj[k]=document.getElementById('txt_'+k).value);
+  obj.importance=quillImp.root.innerHTML;
   localStorage.setItem('siteTexts',JSON.stringify(obj));
+  logActivity('ذخیره متون اصلی');
   alert('ذخیره شد');
-}
-function addPrice(){
-  const p=JSON.parse(localStorage.getItem('prices'))||[];
-  p.push({name:'',original:0,final:0});
-  localStorage.setItem('prices',JSON.stringify(p));
-  loadAll();
 }
 function savePrice(i,k,v){
   const p=JSON.parse(localStorage.getItem('prices'));
   p[i][k]=k==='name'?v:Number(v);
   localStorage.setItem('prices',JSON.stringify(p));
+  loadAll();
+  logActivity('ویرایش قیمت');
+}
+function addPriceRow(){
+  const p=JSON.parse(localStorage.getItem('prices'))||[];
+  p.push({name:'',original:0,final:0});
+  localStorage.setItem('prices',JSON.stringify(p));
+  loadAll();
 }
 function removePrice(i){
   const p=JSON.parse(localStorage.getItem('prices'));
   p.splice(i,1);
   localStorage.setItem('prices',JSON.stringify(p));
   loadAll();
+  logActivity('حذف قیمت');
 }
-function addImage(){
-  const f=document.getElementById('imgFile').files[0];
+function addSliderImage(){
+  const f=document.getElementById('sliderFile').files[0];
   if(!f) return;
-  const reader=new FileReader();
-  reader.onload=e=>{
-    const imgs=JSON.parse(localStorage.getItem('galleryImages'))||[];
-    imgs.push(e.target.result);
-    localStorage.setItem('galleryImages',JSON.stringify(imgs));
+  const r=new FileReader();
+  r.onload=e=>{
+    const s=JSON.parse(localStorage.getItem('sliderImages'))||[];
+    s.push(e.target.result);
+    localStorage.setItem('sliderImages',JSON.stringify(s));
     loadAll();
+    logActivity('افزودن اسلایدر');
   };
-  reader.readAsDataURL(f);
+  r.readAsDataURL(f);
 }
-function removeImg(i){
-  const imgs=JSON.parse(localStorage.getItem('galleryImages'));
-  imgs.splice(i,1);
-  localStorage.setItem('galleryImages',JSON.stringify(imgs));
+function addSlideByUrl(){
+  const url=prompt('URL تصویر را وارد کنید:'); if(!url) return;
+  const s=JSON.parse(localStorage.getItem('sliderImages'))||[];
+  s.push(url);
+  localStorage.setItem('sliderImages',JSON.stringify(s));
+  loadAll();
+  logActivity('افزودن اسلایدر با URL');
+}
+function removeSlider(i){
+  const s=JSON.parse(localStorage.getItem('sliderImages'));
+  s.splice(i,1);
+  localStorage.setItem('sliderImages',JSON.stringify(s));
+  loadAll();
+  logActivity('حذف اسلایدر');
+}
+function addGalleryImages(e){
+  [...e.target.files].forEach(file=>{
+    const r=new FileReader();
+    r.onload=ev=>{
+      const g=JSON.parse(localStorage.getItem('galleryImages'))||[];
+      g.push(ev.target.result);
+      localStorage.setItem('galleryImages',JSON.stringify(g));
+      loadAll();
+      logActivity('افزودن عکس گالری');
+    };
+    r.readAsDataURL(file);
+  });
+}
+function removeGallery(i){
+  const g=JSON.parse(localStorage.getItem('galleryImages'));
+  g.splice(i,1);
+  localStorage.setItem('galleryImages',JSON.stringify(g));
   loadAll();
 }
-function saveRev(i,val){
-  const revs=JSON.parse(localStorage.getItem('comments'));
-  revs[i].text=val;
-  localStorage.setItem('comments',JSON.stringify(revs));
+function saveReview(i,k,v){
+  const r=JSON.parse(localStorage.getItem('comments'));
+  r[i][k]=k==='approved'?v:v;
+  localStorage.setItem('comments',JSON.stringify(r));
 }
-function toggleRev(i){
-  const revs=JSON.parse(localStorage.getItem('comments'));
-  revs[i].approved=!revs[i].approved;
-  localStorage.setItem('comments',JSON.stringify(revs));
-}
-function delRev(i){
-  const revs=JSON.parse(localStorage.getItem('comments'));
-  revs.splice(i,1);
-  localStorage.setItem('comments',JSON.stringify(revs));
+function removeReview(i){
+  const r=JSON.parse(localStorage.getItem('comments'));
+  r.splice(i,1);
+  localStorage.setItem('comments',JSON.stringify(r));
   loadAll();
 }
-/* چک ورود اولیه */
-if(localStorage.getItem('isAdmin')==='true'){
-  document.getElementById('panel').style.display='block';
-  loadAll();
+function saveSEO(){
+  const seo={
+    title:document.getElementById('seo_title').value,
+    desc:document.getElementById('seo_desc').value,
+    keywords:document.getElementById('seo_keywords').value,
+    image:document.getElementById('seo_image').value
+  };
+  localStorage.setItem('siteSEO',JSON.stringify(seo));
+  logActivity('ذخیره سئو');
+  alert('سئو ذخیره شد');
+}
+function saveTheme(){
+  const th={
+    primary:document.getElementById('theme_primary').value,
+    accent:document.getElementById('theme_accent').value,
+    text:document.getElementById('theme_text').value,
+    bg:document.getElementById('theme_bg').value
+  };
+  localStorage.setItem('siteTheme',JSON.stringify(th));
+  logActivity('ذخیره تم رنگی');
+  alert('تم ذخیره شد');
+}
+
+/* ---------- Backup ---------- */
+function exportBackup(){
+  const data={
+    siteTexts: JSON.parse(localStorage.getItem('siteTexts'))||{},
+    prices: JSON.parse(localStorage.getItem('prices'))||[],
+    sliderImages: JSON.parse(localStorage.getItem('sliderImages'))||[],
+    galleryImages: JSON.parse(localStorage.getItem('galleryImages'))||[],
+    comments: JSON.parse(localStorage.getItem('comments'))||[],
+    siteSEO: JSON.parse(localStorage.getItem('siteSEO'))||{},
+    siteTheme: JSON.parse(localStorage.getItem('siteTheme'))||{},
+    log: JSON.parse(localStorage.getItem('activityLog'))||[]
+  };
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url; a.download='backup_derakhshan.json'; a.click();
+  logActivity('دانلود بک‌آپ');
+}
+function importBackup(e){
+  const file=e.target.files[0];
+  if(!file) return;
+  const reader=new FileReader();
+  reader.onload=function(ev){
+    const data=JSON.parse(ev.target.result);
+    Object.keys(data).forEach(k=>localStorage.setItem(k,JSON.stringify(data[k])));
+    loadAll();
+    alert('بازگردانی انجام شد');
+    logActivity('بازگردانی از فایل');
+  };
+  reader.readAsText(file);
+}
+
+/* ---------- Activity Log ---------- */
+function logActivity(action){
+  const log=JSON.parse(localStorage.getItem('activityLog'))||[];
+  log.unshift({action,user:'Admin',time:new Date().toLocaleString('fa-IR'),ip:'127.0.0.1'});
+  if(log.length>100) log.pop();
+  localStorage.setItem('activityLog',JSON.stringify(log));
+}
+function showLog(){
+  const log=JSON.parse(localStorage.getItem('activityLog'))||[];
+  document.getElementById('logBox').style.display='block';
+  document.getElementById('logBox').textContent=log.map(l=>`${l.time} - ${l.user} - ${l.action}`).join('\n');
+}
+function clearLog(){
+  localStorage.removeItem('activityLog');
+  document.getElementById('logBox').style.display='none';
 }
 </script>
 </body>
