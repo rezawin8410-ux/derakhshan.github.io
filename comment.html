@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>ارسال نظر</title>
+    <style>
+        body { font-family: Tahoma; background: #f5f5f5; margin: 0; padding: 20px; }
+        form { background: white; padding: 20px; border-radius: 5px; max-width: 500px; margin: auto; }
+        input, textarea { width: 100%; padding: 10px; margin: 5px 0; }
+        button { background: #28a745; color: white; padding: 10px; border: none; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+<form onsubmit="submitComment(event)">
+    <h2>ارسال نظر</h2>
+    <input type="text" id="name" placeholder="نام شما" required>
+    <textarea id="comment" placeholder="نظر شما" required></textarea>
+    <button type="submit">ارسال</button>
+</form>
+
+<script>
+    function submitComment(e) {
+        e.preventDefault();
+        const name = document.getElementById('name').value;
+        const text = document.getElementById('comment').value;
+
+        const comments = JSON.parse(localStorage.getItem('comments')) || [];
+        comments.push({
+            name,
+            text,
+            date: new Date().toLocaleString('fa-IR'),
+            reply: ''
+        });
+        localStorage.setItem('comments', JSON.stringify(comments));
+
+        alert("نظر شما ارسال شد!");
+        document.getElementById('name').value = '';
+        document.getElementById('comment').value = '';
+    }
+</script>
+
+</body>
+</html>
