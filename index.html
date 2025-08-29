@@ -3,9 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title id="metaTitleTag">درخشان – شستشوی مبل و تشک در محل ارومیه</title>
-<meta name="description" id="metaDescTag" content="شستشوی مبل، تشک، فرش در محل با تضمین رضایت. ۰۹۱۴۸۱۷۸۴۱۰ – ۰۹۱۰۴۴۱۵۴۰۰">
-<meta property="og:image" id="metaImageTag" content="https://i.postimg.cc/nz2268k0/3d013959-6596-4c50-89b5-3105ca979fc5.jpg">
+<title id="pageTitle">درخشان – شستشوی مبل و تشک در محل ارومیه</title>
+<meta name="description" id="pageDesc" content="شستشوی مبل، تشک، فرش در محل با تضمین رضایت. ۰۹۱۴۸۱۷۸۴۱۰ – ۰۹۱۰۴۴۱۵۴۰۰">
 <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css" rel="stylesheet">
 <style>
 :root{
@@ -13,135 +12,82 @@
   --accent:#ff6f00;
   --text:#004d40;
   --bg:#e0f7fa;
-  --font-family:Vazir,Tahoma,sans-serif;
+  --font:Vazir,Tahoma,sans-serif;
 }
-*{margin:0;padding:0;box-sizing:border-box;font-family:var(--font-family)}
-body{background:var(--bg);color:var(--text);line-height:1.9}
-.container{max-width:1200px;margin:0 auto;padding:0 20px}
-@keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-.fade{animation:fadeIn 1s forwards}
+*{margin:0;padding:0;box-sizing:border-box;font-family:var(--font)}
+body{background:var(--bg);color:var(--text);line-height:1.8}
 header{background:var(--primary);color:#fff;padding:15px 0;position:sticky;top:0;z-index:1000}
-.header-content{display:flex;justify-content:space-between;align-items:center}
-nav ul{display:flex;gap:25px;list-style:none;flex-wrap:wrap}
-nav a{color:#fff;text-decoration:none;font-weight:600;transition:.3s}
 .hero{background:linear-gradient(135deg,var(--primary),#00897b);color:#fff;min-height:60vh;display:flex;align-items:center;justify-content:center;text-align:center}
-.hero h2{font-size:clamp(1.8rem,5vw,3rem);margin-bottom:15px}
-.cta-button{background:var(--accent);color:#fff;padding:14px 30px;border-radius:50px;font-size:1.2rem;text-decoration:none;font-weight:700}
+.cta{background:var(--accent);color:#fff;padding:14px 30px;border-radius:50px;font-size:1.2rem;text-decoration:none;font-weight:700}
+.container{max-width:1200px;margin:0 auto;padding:0 20px}
 .price-table{display:grid;gap:12px;margin-top:40px;font-size:1.1rem}
 .price-item{display:flex;justify-content:space-between;align-items:center;background:#fff;border-radius:15px;padding:15px 25px;box-shadow:0 6px 15px rgba(0,0,0,.08)}
 .original{text-decoration:line-through;color:#777}
 .final{color:var(--primary);font-weight:700;font-size:1.3rem}
-.gallery{--gap:20px;--min:280px;display:grid;gap:var(--gap);grid-template-columns:repeat(auto-fit,minmax(var(--min),1fr))}
-.gallery figure{position:relative;border-radius:15px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,.08)}
-.gallery img{width:100%;height:220px;object-fit:cover}
-.brand-glow{position:absolute;bottom:10px;right:10px;background:rgba(0,191,165,.8);color:#fff;padding:5px 10px;border-radius:8px;font-size:.9rem;font-weight:700}
-#banner{background:linear-gradient(135deg,#ffe259,#ffa751);margin:50px 0;padding:40px 20px;border-radius:20px;text-align:center;color:#004d40}
-#banner h2{font-size:2rem;margin-bottom:15px;text-shadow:1px 1px 2px #000}
-#banner p{font-size:1.3rem;margin-bottom:25px}
+.gallery{--gap:20px;display:grid;gap:var(--gap);grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.gallery img{width:100%;height:220px;object-fit:cover;border-radius:15px;box-shadow:0 4px 12px rgba(0,0,0,.08)}
 footer{background:#00897b;color:#fff;padding:40px 0;text-align:center}
 </style>
 </head>
 <body>
-<header class="fade">
-  <div class="container header-content">
-    <div style="font-weight:700;font-size:1.4rem;color:var(--accent)" id="siteTitle">درخشان ارومیه</div>
-    <nav>
-      <ul>
-        <li><a href="#prices">قیمت‌ها</a></li>
-        <li><a href="#gallery">گالری</a></li>
-        <li><a href="#importance">چرا بشوریم؟</a></li>
-        <li><a href="#reviews">نظرات</a></li>
-        <li><a href="#contact">تماس</a></li>
-      </ul>
-    </nav>
+<header>
+  <div class="container" style="display:flex;justify-content:space-between;align-items:center">
+    <h1 id="siteTitle">درخشان ارومیه</h1>
+    <a href="admin.html" class="cta" style="font-size:.9rem;padding:8px 16px">ورود به پنل مدیریت</a>
   </div>
 </header>
 
-<section class="hero fade">
+<section class="hero">
   <div>
-    <h2>مبل، تشک، فرش → مثل روز اولش کن!</h2>
-    <p>بدون جابجایی، با تضمین رضایت 💯٪؛ اگر خوشت نیومد پول نمی‌گیریم.</p>
-    <a href="#contact" class="cta-button">همین حالا تماس بگیر</a>
+    <h2 id="heroTitle">مبل، تشک، فرش → مثل روز اولش کن!</h2>
+    <p id="heroSubtitle">بدون جابجایی، با تضمین رضایت 💯٪؛ اگر خوشت نیومد پول نمی‌گیریم.</p>
+    <a href="#contact" class="cta">همین حالا تماس بگیر</a>
   </div>
 </section>
 
-<section id="banner" class="fade">
+<section id="banner" class="container" style="margin:50px 0;padding:40px 20px;border-radius:20px;text-align:center">
   <h2 id="bannerTitle">🎁 امتیاز شستشوی مبل رایگان بگیر!</h2>
-  <p id="bannerText">ثبت‌نام کن و یک <strong>کد معرف اختصاصی</strong> بگیر. هر کسی با آن کد به ما مراجعه کند، به ازای هر نفر یک نفره مبل برای شما رایگان می‌شود.</p>
-  <button class="cta-button" onclick="window.open('https://yourusername.github.io/my-website/admin.html','_self')">ورود به پنل مدیریت</button>
+  <p id="bannerText">ثبت‌نام کن و یک کد معرف اختصاصی بگیر. هر کسی با آن کد به ما مراجعه کند، به ازای هر نفر یک نفره مبل برای شما رایگان می‌شود.</p>
 </section>
 
-<section id="prices" class="fade">
-  <div class="container">
-    <h2 style="text-align:center;margin-bottom:40px">قیمت‌ها با تخفیف مخصوص این ماه</h2>
-    <div id="priceTable" class="price-table"></div>
-  </div>
+<section class="container">
+  <h2 style="text-align:center;margin-bottom:40px">قیمت‌ها با تخفیف مخصوص این ماه</h2>
+  <div id="prices" class="price-table"></div>
 </section>
 
-<section id="gallery" class="fade">
-  <div class="container">
-    <h2 style="text-align:center;margin-bottom:20px">گالری واقعی ما</h2>
-    <div id="galleryContainer" class="gallery"></div>
-  </div>
+<section class="container">
+  <h2 style="text-align:center;margin-bottom:20px">گالری واقعی ما</h2>
+  <div id="gallery" class="gallery"></div>
 </section>
 
-<section id="importance" class="fade">
-  <div class="container">
-    <h2 style="text-align:center;margin-bottom:20px">چرا باید مبل، تشک و فرش را حرفه‌ای بشوییم؟</h2>
-    <div id="importanceText" class="importance-scroll">
-      مبل و تشک خونه‌تون پر از کنه، گردوغبار و قارچه؛ اینا نه‌تنها بوی بد می‌دن، بلکه بچه‌هاتون رو هم آزار می‌دن. آب و شامپوی معمولی فقط سطح رو کمی پاک میکنه؛ ما با مواد نانو تا عمق تاروپود می‌ریم. خشک‌شدن زیر یک ساعت = بدون بو و کپک. صرفه‌جویی: یک شستشوی حرفه‌ای از تعویض یک فرش چند میلیونی جلوگیری می‌کنه. با هر سفارش یک بطری لکه‌بر نانو هدیه می‌گیرید. درخشان ۸ ساله در ارومیه؛ هزاران خانه اعتماد کردن.
-    </div>
-  </div>
+<section class="container">
+  <h2 style="text-align:center;margin-bottom:20px">چرا باید مبل، تشک و فرش را حرفه‌ای بشوییم؟</h2>
+  <div id="importance" style="background:#fff;padding:25px;border-radius:15px;font-size:1.1rem;line-height:2"></div>
 </section>
 
-<section id="reviews" class="fade">
-  <div class="container">
-    <h2 style="text-align:center;margin-bottom:30px">نظرات مشتریان واقعی</h2>
-    <div id="reviewsContainer" class="testimonial-grid"></div>
-  </div>
+<section class="container">
+  <h2 style="text-align:center;margin-bottom:30px">نظرات مشتریان واقعی</h2>
+  <div id="reviews" class="gallery"></div>
 </section>
 
-<section id="contact" class="fade">
-  <div class="container" style="text-align:center">
-    <h3>تماس با درخشان</h3>
-    <p>تلفن / واتساپ: <a href="tel:09148178410" style="color:var(--accent)">09148178410</a></p>
-    <p>تلفن / واتساپ: <a href="tel:09104415400" style="color:var(--accent)">09104415400</a></p>
-    <p>ساعات: ۸ صبح تا ۱۲ شب، همه روزه (حتی تعطیل)</p>
-    <p>پوشش: تمام نقاط ارومیه – خدمات در محل</p>
-    <a href="https://wa.me/989148178410" class="cta-button">ارسال پیام در واتساپ</a>
-  </div>
+<section id="contact" class="container" style="text-align:center;margin:40px 0">
+  <h2>تماس با درخشان</h2>
+  <p>تلفن / واتساپ: <a href="tel:09148178410">۰۹۱۴۸۱۷۸۴۱۰</a> – <a href="tel:09104415400">۰۹۱۰۴۴۱۵۴۰۰</a></p>
+  <p>ساعات: ۸ صبح تا ۱۲ شب – تمام نقاط ارومیه</p>
+  <a href="https://wa.me/989148178410" class="cta">ارسال پیام در واتساپ</a>
 </section>
 
 <footer>
   <div class="container">
-    <div style="font-weight:700;font-size:1.3rem;color:var(--accent)">درخشان ارومیه</div>
     <p id="footerText">۸ سال تجربه • تضمین رضایت • تخفیف مخصوص این ماه</p>
-    <p style="font-size:.9rem;margin-top:15px">© ۲۰۲۴ تمامی حقوق محفوظ است</p>
+    <p>© ۲۰۲۴ تمامی حقوق محفوظ است</p>
   </div>
 </footer>
 
 <script>
-/* بارگذاری تنظیمات از localStorage که توسط پنل مدیریت ذخیره می‌شوند */
-function loadSettings(){
-  const settings = JSON.parse(localStorage.getItem('siteSettings')) || {};
-  document.documentElement.style.setProperty('--primary', settings.color || '#00bfa5');
-  document.documentElement.style.setProperty('--accent', settings.accent || '#ff6f00');
-  document.documentElement.style.setProperty('--text', settings.textColor || '#004d40');
-  document.documentElement.style.setProperty('--bg', settings.bgColor || '#e0f7fa');
-  document.documentElement.style.setProperty('--font-family', settings.font || 'Vazir,Tahoma,sans-serif');
-  document.title = settings.title || 'درخشان – شستشوی مبل و تشک در محل ارومیه';
-  document.getElementById('siteTitle').textContent = settings.title || 'درخشان ارومیه';
-  document.getElementById('footerText').textContent = settings.footer || '۸ سال تجربه • تضمین رضایت • تخفیف مخصوص این ماه';
-
-  /* بروزرسانی متاهای سئو */
-  const seo = JSON.parse(localStorage.getItem('siteSEO')) || {};
-  document.getElementById('metaTitleTag').content = seo.title || document.title;
-  document.getElementById('metaDescTag').content = seo.desc || 'شستشوی مبل، تشک، فرش در محل با تضمین رضایت.';
-  document.getElementById('metaImageTag').content = seo.image || 'https://i.postimg.cc/nz2268k0/3d013959-6596-4c50-89b5-3105ca979fc5.jpg';
-}
-
-/* بارگذاری قیمت‌ها */
-function loadPrices(){
+/* بارگذاری متون از localStorage */
+function loadAll(){
+  const texts = JSON.parse(localStorage.getItem('siteTexts')) || {};
   const prices = JSON.parse(localStorage.getItem('prices')) || [
     {name:'هر نفره مبل', original:125000, final:100000},
     {name:'صندلی غذاخوری', original:80000, final:65000},
@@ -151,23 +97,7 @@ function loadPrices(){
     {name:'تشک خوشخواب دونفره', original:1000000, final:800000},
     {name:'فرش هر متر مربع', original:50000, final:40000}
   ];
-  const container = document.getElementById('priceTable');
-  container.innerHTML = '';
-  prices.forEach(p=>{
-    container.innerHTML += `
-      <div class="price-item">
-        <span>${p.name}</span>
-        <span>
-          <span class="original">${p.original.toLocaleString('fa-IR')}</span> →
-          <span class="final">${p.final.toLocaleString('fa-IR')} تومان</span>
-        </span>
-      </div>`;
-  });
-}
-
-/* بارگذاری گالری */
-function loadGallery(){
-  const images = JSON.parse(localStorage.getItem('galleryImages')) || [
+  const imgs = JSON.parse(localStorage.getItem('galleryImages')) || [
     'https://i.postimg.cc/nz2268k0/3d013959-6596-4c50-89b5-3105ca979fc5.jpg',
     'https://i.postimg.cc/59PpgVjt/7293cb88-79a8-4a20-8ffb-31903168d762.jpg',
     'https://i.postimg.cc/dVbybQy8/4892911d-1e73-4593-ba8a-0b85d9406c13.jpg',
@@ -179,37 +109,39 @@ function loadGallery(){
     'https://i.postimg.cc/jdCnCn6H/sandal1.jpg',
     'https://i.postimg.cc/yY5gR6nw/sandali.jpg'
   ];
-  const container = document.getElementById('galleryContainer');
-  container.innerHTML = '';
-  images.forEach(src=>{
-    container.innerHTML += `
-      <figure>
-        <img src="${src}" alt="نمونه کار">
-        <span class="brand-glow">مبل‌شویی درخشان</span>
-      </figure>`;
-  });
+  const reviews = JSON.parse(localStorage.getItem('comments')) || [
+    {text:'مبل ۸ نفره‌مون مثل روز اول شد؛ قیمت هم عالی بود.', name:'خانم رحیمی', approved:true},
+    {text:'فرش ۹ متری ۳۶۰ تومن شد؛ خشک‌شدنش زیر یک ساعت بود!', name:'آقای محمدی', approved:true},
+    {text:'تشک دونفره ۸۰۰ تومن؛ راضی نبودم پول ندادم.', name:'آقای علیزاده', approved:true}
+  ];
+
+  /* اعمال متون */
+  Object.entries(texts).forEach(([id,val])=>{ const el=document.getElementById(id); if(el) el.innerHTML=val; });
+
+  /* پر کردن جدول قیمت‌ها */
+  document.getElementById('prices').innerHTML = prices.map(p=>`
+    <div class="price-item">
+      <span>${p.name}</span>
+      <span>
+        <span class="original">${p.original.toLocaleString('fa-IR')}</span>
+        →
+        <span class="final">${p.final.toLocaleString('fa-IR')} تومان</span>
+      </span>
+    </div>`).join('');
+
+  /* پر کردن گالری */
+  document.getElementById('gallery').innerHTML = imgs.map(src=>`
+    <img src="${src}" alt="نمونه کار">`).join('');
+
+  /* پر کردن نظرات */
+  document.getElementById('reviews').innerHTML = reviews.filter(r=>r.approved).map(r=>`
+    <div style="background:#fff;border-left:4px solid var(--accent);border-radius:15px;padding:15px;font-size:.95rem">
+      ${r.text} <br><small>– ${r.name}</small>
+    </div>`).join('');
 }
-
-/* بارگذاری نظرات تایید شده */
-function loadReviews(){
-  const comments = JSON.parse(localStorage.getItem('comments')) || [];
-  const container = document.getElementById('reviewsContainer');
-  container.innerHTML = '';
-  comments.filter(c=>c.approved).forEach(c=>{
-    container.innerHTML += `
-      <div class="testimonial-card">${c.text} – ${c.name}</div>`;
-  });
-}
-
-/* اجرای اولیه */
-loadSettings();
-loadPrices();
-loadGallery();
-loadReviews();
-
-window.addEventListener('storage', ()=>{ /* اگر در تب دیگر تغییر دادید */ 
-  loadSettings(); loadPrices(); loadGallery(); loadReviews();
-});
+loadAll();
+/* اگر در تب دیگر پنل تغییر دادید، همین‌جا هم auto update می‌شود */
+window.addEventListener('storage', loadAll);
 </script>
 </body>
 </html>
