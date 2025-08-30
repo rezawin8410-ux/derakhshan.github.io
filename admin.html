@@ -2,25 +2,23 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<title>پنل پست‌گذاری حرفه‌ای – درخشان</title>
+<title>پنل پست‌گذاری – درخشان</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css">
-<!-- Quill (ویرایشگر رایگان) -->
+<!-- Quill -->
 <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
-<!-- Toast-UI Markdown -->
+<!-- Toast-UI -->
 <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css">
-<!-- CodeMirror -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
 <style>
 body{font-family:Tahoma;background:#f5f5f5;margin:0}
 .section{background:#fff;border-radius:12px;padding:25px;margin:25px 0;box-shadow:0 4px 12px rgba(0,0,0,.1)}
 h2{color:#00bfa5;margin-bottom:15px}
-#editorContainer{min-height:400px;border:1px solid #ddd;border-radius:8px}
+#editorContainer{min-height:300px;border:1px solid #ddd;border-radius:8px}
 </style>
 </head>
 <body>
 <div class="container-fluid mt-4">
-  <h1 class="text-center mb-4">پنل پست‌گذاری حرفه‌ای – درخشان</h1>
+  <h1 class="text-center mb-4">پنل پست‌گذاری – درخشان</h1>
 
   <!-- LOGIN -->
   <div id="loginBox" class="text-center" style="max-width:400px;margin:auto">
@@ -51,12 +49,6 @@ h2{color:#00bfa5;margin-bottom:15px}
       <h2>پست‌های موجود</h2>
       <div id="postsList"></div>
     </div>
-
-    <!-- بک‌آپ -->
-    <div class="section">
-      <button class="btn btn-success" onclick="exportFull()">دانلود بک‌آپ کامل</button>
-      <input type="file" accept=".json" onchange="importFull(event)" class="form-control mt-2">
-    </div>
   </div>
 </div>
 
@@ -64,14 +56,13 @@ h2{color:#00bfa5;margin-bottom:15px}
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <!-- Quill -->
 <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
-<!-- Toast-UI Markdown -->
+<!-- Toast-UI -->
 <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
 <!-- CodeMirror -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/xml/xml.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/javascript/javascript.min.js"></script>
 <script>
-/* ---------- LOGIN ---------- */
 const PASSWORD='admin1234';
 function login(){
   if(document.getElementById('pass').value===PASSWORD){
@@ -91,21 +82,18 @@ if(localStorage.getItem('isAdmin')==='true'){
 /* ---------- Editors ---------- */
 let quillInstance, mdInstance, cmInstance;
 function initEditors(){
-  /* Quill */
   if(!quillInstance){
     quillInstance=new Quill('#editorContainer',{theme:'snow'});
   }
-  /* Toast-UI Markdown */
   if(!mdInstance){
     mdInstance=new toastui.Editor({
       el:document.getElementById('editorContainer'),
       previewStyle:'vertical',
-      height:'400px',
+      height:'300px',
       initialEditType:'markdown',
       language:'fa'
     });
   }
-  /* CodeMirror */
   if(!cmInstance){
     cmInstance=CodeMirror(document.getElementById('editorContainer'),{
       mode:'htmlmixed',
@@ -124,7 +112,7 @@ function switchEditor(){
     initEditors(); mdInstance=new toastui.Editor({
       el:document.getElementById('editorContainer'),
       previewStyle:'vertical',
-      height:'400px',
+      height:'300px',
       initialEditType:'markdown',
       language:'fa'
     });
@@ -192,27 +180,6 @@ function deletePost(id){
   const posts=JSON.parse(localStorage.getItem('posts')||'[]').filter(p=>p.id!==id);
   localStorage.setItem('posts',JSON.stringify(posts));
   loadPosts();
-}
-
-/* ---------- Backup ---------- */
-function exportFull(){
-  const keys=['posts','log'];
-  const data=Object.fromEntries(keys.map(k=>[k,JSON.parse(localStorage.getItem(k))||[]]));
-  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a'); a.href=url; a.download='full_backup.json'; a.click();
-}
-function importFull(e){
-  const file=e.target.files[0];
-  if(!file) return;
-  const r=new FileReader();
-  r.onload=ev=>{
-    const data=JSON.parse(ev.target.result);
-    Object.keys(data).forEach(k=>localStorage.setItem(k,JSON.stringify(data[k])));
-    loadPosts();
-    alert('بازگردانی شد');
-  };
-  r.readAsText(file);
 }
 </script>
 </body>
