@@ -7,8 +7,6 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css">
 <!-- Quill -->
 <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
-<!-- Toast-UI -->
-<link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css">
 <style>
 body{font-family:Tahoma;background:#f5f5f5;margin:0}
 .section{background:#fff;border-radius:12px;padding:25px;margin:25px 0;box-shadow:0 4px 12px rgba(0,0,0,.1)}
@@ -19,7 +17,6 @@ h2{color:#00bfa5;margin-bottom:15px}
 <body>
 <div class="container-fluid mt-4">
   <h1 class="text-center mb-4">پنل پست‌گذاری – درخشان</h1>
-
   <!-- LOGIN -->
   <div id="loginBox" class="text-center" style="max-width:400px;margin:auto">
     <input type="password" id="pass" class="form-control mb-2" placeholder="رمز عبور">
@@ -33,14 +30,7 @@ h2{color:#00bfa5;margin-bottom:15px}
     <div class="section">
       <input type="hidden" id="postId">
       <input id="postTitle" class="form-control mb-2" placeholder="عنوان پست">
-      <select id="editorType" class="form-select mb-2" onchange="switchEditor()">
-        <option value="quill">Quill (WYSIWYG)</option>
-        <option value="markdown">Toast-UI Markdown</option>
-        <option value="code">CodeMirror</option>
-      </select>
       <div id="editorContainer"></div>
-      <textarea id="customHead" class="form-control mt-2" rows="2" placeholder="کد دلخواه Head این پست"></textarea>
-      <textarea id="customFoot" class="form-control mt-2" rows="2" placeholder="کد دلخواه Footer این پست"></textarea>
       <button class="btn btn-primary mt-2" onclick="savePost()">ذخیره پست</button>
     </div>
 
@@ -54,14 +44,7 @@ h2{color:#00bfa5;margin-bottom:15px}
 
 <!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<!-- Quill -->
 <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
-<!-- Toast-UI -->
-<script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
-<!-- CodeMirror -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/xml/xml.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/javascript/javascript.min.js"></script>
 <script>
 const PASSWORD='admin1234';
 function login(){
@@ -69,92 +52,42 @@ function login(){
     localStorage.setItem('isAdmin','true');
     document.getElementById('loginBox').classList.add('d-none');
     document.getElementById('panel').classList.remove('d-none');
-    initEditors();
+    initEditor();
     loadPosts();
   }else{
     document.getElementById('msg').textContent='رمز اشتباه است';
   }
 }
-if(localStorage.getItem('isAdmin')==='true'){
-  login();
+function initEditor(){
+  if(window.quillInstance) return;
+  window.quillInstance=new Quill('#editorContainer',{theme:'snow'});
 }
-
-/* ---------- Editors ---------- */
-let quillInstance, mdInstance, cmInstance;
-function initEditors(){
-  if(!quillInstance){
-    quillInstance=new Quill('#editorContainer',{theme:'snow'});
-  }
-  if(!mdInstance){
-    mdInstance=new toastui.Editor({
-      el:document.getElementById('editorContainer'),
-      previewStyle:'vertical',
-      height:'300px',
-      initialEditType:'markdown',
-      language:'fa'
-    });
-  }
-  if(!cmInstance){
-    cmInstance=CodeMirror(document.getElementById('editorContainer'),{
-      mode:'htmlmixed',
-      lineNumbers:true
-    });
-  }
-}
-
-/* ---------- Switch Editor ---------- */
-function switchEditor(){
-  const type=document.getElementById('editorType').value;
-  document.getElementById('editorContainer').innerHTML='';
-  if(type==='quill'){
-    initEditors(); quillInstance=new Quill('#editorContainer',{theme:'snow'});
-  }else if(type==='markdown'){
-    initEditors(); mdInstance=new toastui.Editor({
-      el:document.getElementById('editorContainer'),
-      previewStyle:'vertical',
-      height:'300px',
-      initialEditType:'markdown',
-      language:'fa'
-    });
-  }else if(type==='code'){
-    initEditors(); cmInstance=CodeMirror(document.getElementById('editorContainer'),{mode:'htmlmixed',lineNumbers:true});
-  }
-}
-
-/* ---------- Save Post ---------- */
 function generateId(){return Date.now().toString(36);}
 function savePost(){
   const id=document.getElementById('postId').value || generateId();
-  const type=document.getElementById('editorType').value;
-  let content='';
-  if(type==='quill') content=quillInstance.root.innerHTML;
-  else if(type==='markdown') content=mdInstance.getMarkdown();
-  else if(type==='code') content=cmInstance.getValue();
   const post={
     id,
     title:document.getElementById('postTitle').value,
-    content,
-    editorType:type,
-    customHead:document.getElementById('customHead').value,
-    customFoot:document.getElementById('customFoot').value,
+    content:quillInstance.root.innerHTML,
     created:new Date().toLocaleString('fa-IR')
   };
   const posts=JSON.parse(localStorage.getItem('posts')||'[]');
   const idx=posts.findIndex(p=>p.id===id);
   if(idx>-1) posts[idx]=post; else posts.push(post);
   localStorage.setItem('posts',JSON.stringify(posts));
-  alert('ذخیره شد');
+  alert('پست ذخیره شد');
+  document.getElementById('postId').value='';
+  document.getElementById('postTitle').value='';
+  quillInstance.setContents([]);
   loadPosts();
 }
-
-/* ---------- Load Posts ---------- */
 function loadPosts(){
   const posts=JSON.parse(localStorage.getItem('posts')||'[]');
   const list=document.getElementById('postsList'); list.innerHTML='';
   posts.forEach(p=>{
     list.innerHTML+=`
       <div class="border p-2 mb-2">
-        <strong>${p.title}</strong> (${p.editorType})
+        <strong>${p.title}</strong>
         <button class="btn btn-sm btn-warning" onclick="editPost('${p.id}')">ویرایش</button>
         <button class="btn btn-sm btn-danger" onclick="deletePost('${p.id}')">حذف</button>
       </div>`;
@@ -165,21 +98,16 @@ function editPost(id){
   const p=posts.find(x=>x.id===id);
   document.getElementById('postId').value=p.id;
   document.getElementById('postTitle').value=p.title;
-  document.getElementById('editorType').value=p.editorType;
-  switchEditor();
-  setTimeout(()=>{
-    if(p.editorType==='quill') quillInstance.root.innerHTML=p.content;
-    else if(p.editorType==='markdown') mdInstance.setMarkdown(p.content);
-    else if(p.editorType==='code') cmInstance.setValue(p.content);
-  },100);
-  document.getElementById('customHead').value=p.customHead||'';
-  document.getElementById('customFoot').value=p.customFoot||'';
+  quillInstance.root.innerHTML=p.content;
 }
 function deletePost(id){
   if(!confirm('حذف شود؟')) return;
   const posts=JSON.parse(localStorage.getItem('posts')||'[]').filter(p=>p.id!==id);
   localStorage.setItem('posts',JSON.stringify(posts));
   loadPosts();
+}
+if(localStorage.getItem('isAdmin')==='true'){
+  login();
 }
 </script>
 </body>
