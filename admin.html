@@ -2,21 +2,24 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<title>پنل پست‌گذاری – درخشان</title>
+<title>پنل پست‌گذاری یکپارچه – درخشان</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css">
-<!-- Quill -->
-<link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
 <style>
-body{font-family:Tahoma;background:#f5f5f5;margin:0}
+:root{--primary:#00bfa5;--accent:#ff6f00;--bg:#f5f5f5}
+body{font-family:Tahoma;background:var(--bg);margin:0}
 .section{background:#fff;border-radius:12px;padding:25px;margin:25px 0;box-shadow:0 4px 12px rgba(0,0,0,.1)}
-h2{color:#00bfa5;margin-bottom:15px}
-#editorContainer{min-height:300px;border:1px solid #ddd;border-radius:8px}
+h2{color:var(--primary);margin-bottom:15px}
+#editorText{width:100%;min-height:200px;border:1px solid #ccc;border-radius:8px;padding:10px;font-family:inherit}
+#previewDIV{background:#f9f9f9;border:1px dashed #ccc;border-radius:8px;padding:15px;margin-top:10px}
+#previewDIV img{max-width:100%;border-radius:6px;margin:5px 0}
+@media (max-width:576px){.section{padding:15px}}
 </style>
 </head>
 <body>
 <div class="container-fluid mt-4">
-  <h1 class="text-center mb-4">پنل پست‌گذاری – درخشان</h1>
+  <h1 class="text-center mb-4">پنل پست‌گذاری یکپارچه – درخشان</h1>
+
   <!-- LOGIN -->
   <div id="loginBox" class="text-center" style="max-width:400px;margin:auto">
     <input type="password" id="pass" class="form-control mb-2" placeholder="رمز عبور">
@@ -30,7 +33,14 @@ h2{color:#00bfa5;margin-bottom:15px}
     <div class="section">
       <input type="hidden" id="postId">
       <input id="postTitle" class="form-control mb-2" placeholder="عنوان پست">
-      <div id="editorContainer"></div>
+      <textarea id="editorText" placeholder="محتوا (متن، تصویر، کد، فرمول و …)"></textarea>
+      <button class="btn btn-outline-secondary mt-1" onclick="insertImage()">افزودن عکس</button>
+      <button class="btn btn-outline-secondary mt-1" onclick="insertCode()">کد</button>
+      <button class="btn btn-outline-secondary mt-1" onclick="insertFormula()">فرمول LaTeX</button>
+      <button class="btn btn-outline-secondary mt-1" onclick="togglePreview()">پیش‌نمایش</button>
+      <div id="previewDIV" style="display:none;"></div>
+      <textarea id="customHead" class="form-control mt-2" rows="2" placeholder="کد دلخواه Head این پست"></textarea>
+      <textarea id="customFoot" class="form-control mt-2" rows="2" placeholder="کد دلخواه Footer این پست"></textarea>
       <button class="btn btn-primary mt-2" onclick="savePost()">ذخیره پست</button>
     </div>
 
@@ -39,12 +49,15 @@ h2{color:#00bfa5;margin-bottom:15px}
       <h2>پست‌های موجود</h2>
       <div id="postsList"></div>
     </div>
+
+    <!-- بک‌آپ -->
+    <div class="section">
+      <button class="btn btn-success" onclick="exportFull()">دانلود بک‌آپ</button>
+      <input type="file" accept=".json" onchange="importFull(event)" class="form-control mt-2">
+    </div>
   </div>
 </div>
 
-<!-- Scripts -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
 <script>
 const PASSWORD='admin1234';
 function login(){
@@ -52,33 +65,39 @@ function login(){
     localStorage.setItem('isAdmin','true');
     document.getElementById('loginBox').classList.add('d-none');
     document.getElementById('panel').classList.remove('d-none');
-    initEditor();
     loadPosts();
   }else{
     document.getElementById('msg').textContent='رمز اشتباه است';
   }
 }
-function initEditor(){
-  if(window.quillInstance) return;
-  window.quillInstance=new Quill('#editorContainer',{theme:'snow'});
+if(localStorage.getItem('isAdmin')==='true'){
+  document.getElementById('loginBox').classList.add('d-none');
+  document.getElementById('panel').classList.remove('d-none');
+  loadPosts();
 }
+
+/* ذخیره و بازیابی */
 function generateId(){return Date.now().toString(36);}
 function savePost(){
   const id=document.getElementById('postId').value || generateId();
   const post={
     id,
     title:document.getElementById('postTitle').value,
-    content:quillInstance.root.innerHTML,
+    content:document.getElementById('editorText').value,
+    customHead:document.getElementById('customHead').value,
+    customFoot:document.getElementById('customFoot').value,
     created:new Date().toLocaleString('fa-IR')
   };
   const posts=JSON.parse(localStorage.getItem('posts')||'[]');
   const idx=posts.findIndex(p=>p.id===id);
   if(idx>-1) posts[idx]=post; else posts.push(post);
   localStorage.setItem('posts',JSON.stringify(posts));
-  alert('پست ذخیره شد');
+  alert('ذخیره شد');
   document.getElementById('postId').value='';
   document.getElementById('postTitle').value='';
-  quillInstance.setContents([]);
+  document.getElementById('editorText').value='';
+  document.getElementById('customHead').value='';
+  document.getElementById('customFoot').value='';
   loadPosts();
 }
 function loadPosts(){
@@ -98,7 +117,9 @@ function editPost(id){
   const p=posts.find(x=>x.id===id);
   document.getElementById('postId').value=p.id;
   document.getElementById('postTitle').value=p.title;
-  quillInstance.root.innerHTML=p.content;
+  document.getElementById('editorText').value=p.content;
+  document.getElementById('customHead').value=p.customHead||'';
+  document.getElementById('customFoot').value=p.customFoot||'';
 }
 function deletePost(id){
   if(!confirm('حذف شود؟')) return;
@@ -106,8 +127,48 @@ function deletePost(id){
   localStorage.setItem('posts',JSON.stringify(posts));
   loadPosts();
 }
-if(localStorage.getItem('isAdmin')==='true'){
-  login();
+
+/* ابزارهای ساده */
+function insertImage(){
+  const url=prompt('لینک عکس را وارد کنید:');
+  if(!url) return;
+  const imgTag='<img src="'+url+'" alt="عکس" class="img-fluid">';
+  document.getElementById('editorText').value+=imgTag;
+}
+function insertCode(){
+  const code=prompt('کد را وارد کنید:');
+  if(!code) return;
+  const codeTag='<pre><code>'+code+'</code></pre>';
+  document.getElementById('editorText').value+=codeTag;
+}
+function insertFormula(){
+  const formula=prompt('فرمول LaTeX را وارد کنید (مثلاً x^2):');
+  if(!formula) return;
+  const tag='<span class="katex">'+formula+'</span>';
+  document.getElementById('editorText').value+=tag;
+}
+function togglePreview(){
+  const preview=document.getElementById('previewDIV');
+  preview.style.display=preview.style.display==='none'?'block':'none';
+  preview.innerHTML=document.getElementById('editorText').value;
+}
+function exportFull(){
+  const data={posts:JSON.parse(localStorage.getItem('posts')||'[]')};
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a'); a.href=url; a.download='posts_backup.json'; a.click();
+}
+function importFull(e){
+  const file=e.target.files[0];
+  if(!file) return;
+  const r=new FileReader();
+  r.onload=ev=>{
+    const data=JSON.parse(ev.target.result);
+    localStorage.setItem('posts',JSON.stringify(data.posts||[]));
+    loadPosts();
+    alert('بازگردانی شد');
+  };
+  r.readAsText(file);
 }
 </script>
 </body>
