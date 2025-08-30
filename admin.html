@@ -5,32 +5,14 @@
 <title>پنل پست‌گذاری حرفه‌ای – درخشان</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css">
-<!-- 1️⃣ TinyMCE 6 -->
-<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js"></script>
-<!-- 2️⃣ Toast-UI Markdown -->
+<!-- Quill (ویرایشگر رایگان) -->
+<link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
+<!-- Toast-UI Markdown -->
 <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css">
-<script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
-<!-- 3️⃣ CodeMirror 6 -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.0.1/codemirror.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.0.1/codemirror.min.js"></script>
-<!-- 4️⃣ GrapesJS -->
-<link rel="stylesheet" href="https://unpkg.com/grapesjs/dist/css/grapes.min.css">
-<script src="https://unpkg.com/grapesjs"></script>
-<!-- 5️⃣ RunJS (ساده‌سازی امن) -->
-<script src="https://cdn.jsdelivr.net/npm/safe-eval@0.4.1/safe-eval.min.js"></script>
-<!-- 6️⃣ Embed.js -->
-<script src="https://cdn.jsdelivr.net/npm/embed-js@5.0.0/dist/embed.min.js"></script>
-<!-- 7️⃣ Prism.js -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-<!-- 8️⃣ Plyr.js -->
-<link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css">
-<script src="https://cdn.plyr.io/3.7.8/plyr.min.js"></script>
-<!-- 9️⃣ KaTeX -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
-<script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+<!-- CodeMirror -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
 <style>
-body{font-family:Tahoma;background:#f5f5f5;margin:0;padding:0}
+body{font-family:Tahoma;background:#f5f5f5;margin:0}
 .section{background:#fff;border-radius:12px;padding:25px;margin:25px 0;box-shadow:0 4px 12px rgba(0,0,0,.1)}
 h2{color:#00bfa5;margin-bottom:15px}
 #editorContainer{min-height:400px;border:1px solid #ddd;border-radius:8px}
@@ -54,10 +36,9 @@ h2{color:#00bfa5;margin-bottom:15px}
       <input type="hidden" id="postId">
       <input id="postTitle" class="form-control mb-2" placeholder="عنوان پست">
       <select id="editorType" class="form-select mb-2" onchange="switchEditor()">
-        <option value="tinymce">TinyMCE</option>
+        <option value="quill">Quill (WYSIWYG)</option>
         <option value="markdown">Toast-UI Markdown</option>
         <option value="code">CodeMirror</option>
-        <option value="grapes">GrapesJS Builder</option>
       </select>
       <div id="editorContainer"></div>
       <textarea id="customHead" class="form-control mt-2" rows="2" placeholder="کد دلخواه Head این پست"></textarea>
@@ -73,15 +54,25 @@ h2{color:#00bfa5;margin-bottom:15px}
 
     <!-- بک‌آپ -->
     <div class="section">
-      <button class="btn btn-success" onclick="exportFull()">دانلود بک‌آپ</button>
+      <button class="btn btn-success" onclick="exportFull()">دانلود بک‌آپ کامل</button>
       <input type="file" accept=".json" onchange="importFull(event)" class="form-control mt-2">
     </div>
   </div>
 </div>
 
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Quill -->
+<script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
+<!-- Toast-UI Markdown -->
+<script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+<!-- CodeMirror -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/xml/xml.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/javascript/javascript.min.js"></script>
 <script>
-const PASSWORD='admin1234';
 /* ---------- LOGIN ---------- */
+const PASSWORD='admin1234';
 function login(){
   if(document.getElementById('pass').value===PASSWORD){
     localStorage.setItem('isAdmin','true');
@@ -97,19 +88,12 @@ if(localStorage.getItem('isAdmin')==='true'){
   login();
 }
 
-/* ---------- TinyMCE ---------- */
-let tinyInstance, mdInstance, cmInstance, grapesInstance;
+/* ---------- Editors ---------- */
+let quillInstance, mdInstance, cmInstance;
 function initEditors(){
-  /* TinyMCE */
-  if(!tinyInstance){
-    tinymce.init({
-      selector:'#editorContainer',
-      plugins:'advlist autolink lists link image media table preview code',
-      toolbar:'undo redo | bold italic | bullist numlist | link image media | preview code',
-      language:'fa',
-      height:400,
-      setup:ed=>tinyInstance=ed
-    });
+  /* Quill */
+  if(!quillInstance){
+    quillInstance=new Quill('#editorContainer',{theme:'snow'});
   }
   /* Toast-UI Markdown */
   if(!mdInstance){
@@ -125,19 +109,7 @@ function initEditors(){
   if(!cmInstance){
     cmInstance=CodeMirror(document.getElementById('editorContainer'),{
       mode:'htmlmixed',
-      theme:'default',
-      lineNumbers:true,
-      autofocus:true
-    });
-  }
-  /* GrapesJS */
-  if(!grapesInstance){
-    grapesInstance=grapes.init({
-      container:'#editorContainer',
-      height:'400px',
-      fromElement:false,
-      storageManager:{type:'none'},
-      panels:{defaults:[]}
+      lineNumbers:true
     });
   }
 }
@@ -146,14 +118,18 @@ function initEditors(){
 function switchEditor(){
   const type=document.getElementById('editorType').value;
   document.getElementById('editorContainer').innerHTML='';
-  if(type==='tinymce'){
-    initEditors(); tinyInstance.show();
+  if(type==='quill'){
+    initEditors(); quillInstance=new Quill('#editorContainer',{theme:'snow'});
   }else if(type==='markdown'){
-    initEditors(); mdInstance.show();
+    initEditors(); mdInstance=new toastui.Editor({
+      el:document.getElementById('editorContainer'),
+      previewStyle:'vertical',
+      height:'400px',
+      initialEditType:'markdown',
+      language:'fa'
+    });
   }else if(type==='code'){
-    initEditors(); cmInstance.refresh();
-  }else if(type==='grapes'){
-    initEditors(); grapesInstance.render();
+    initEditors(); cmInstance=CodeMirror(document.getElementById('editorContainer'),{mode:'htmlmixed',lineNumbers:true});
   }
 }
 
@@ -161,17 +137,16 @@ function switchEditor(){
 function generateId(){return Date.now().toString(36);}
 function savePost(){
   const id=document.getElementById('postId').value || generateId();
-  const editorType=document.getElementById('editorType').value;
+  const type=document.getElementById('editorType').value;
   let content='';
-  if(editorType==='tinymce') content=tinyInstance.getContent();
-  else if(editorType==='markdown') content=mdInstance.getMarkdown();
-  else if(editorType==='code') content=cmInstance.getValue();
-  else if(editorType==='grapes') content=grapesInstance.getHtml();
+  if(type==='quill') content=quillInstance.root.innerHTML;
+  else if(type==='markdown') content=mdInstance.getMarkdown();
+  else if(type==='code') content=cmInstance.getValue();
   const post={
     id,
     title:document.getElementById('postTitle').value,
     content,
-    editorType,
+    editorType:type,
     customHead:document.getElementById('customHead').value,
     customFoot:document.getElementById('customFoot').value,
     created:new Date().toLocaleString('fa-IR')
@@ -205,11 +180,10 @@ function editPost(id){
   document.getElementById('editorType').value=p.editorType;
   switchEditor();
   setTimeout(()=>{
-    if(p.editorType==='tinymce') tinyInstance.setContent(p.content);
+    if(p.editorType==='quill') quillInstance.root.innerHTML=p.content;
     else if(p.editorType==='markdown') mdInstance.setMarkdown(p.content);
     else if(p.editorType==='code') cmInstance.setValue(p.content);
-    else if(p.editorType==='grapes') grapesInstance.setComponents(p.content);
-  },300);
+  },100);
   document.getElementById('customHead').value=p.customHead||'';
   document.getElementById('customFoot').value=p.customFoot||'';
 }
