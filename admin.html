@@ -2,23 +2,21 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<title>پنل مدیریت حرفه‌ای – درخشان</title>
+<title>پنل مدیریت – درخشان</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css">
 <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 <style>
 :root{--primary:#00bfa5;--accent:#ff6f00;--bg:#f5f5f5}
 body{font-family:Tahoma;background:var(--bg);margin:0}
 .section{background:#fff;border-radius:10px;padding:20px;margin-bottom:25px}
 h2{color:var(--primary);margin-bottom:15px}
-.ql-container{min-height:200px}
 .nav-tabs .nav-link{cursor:pointer}
 </style>
 </head>
 <body>
 <div class="container-fluid mt-3">
-  <h1 class="text-center mb-4">پنل مدیریت حرفه‌ای – درخشان</h1>
+  <h1 class="text-center mb-4">پنل مدیریت – درخشان</h1>
 
   <!-- LOGIN -->
   <div id="loginBox" class="text-center" style="max-width:400px;margin:auto">
@@ -27,21 +25,23 @@ h2{color:var(--primary);margin-bottom:15px}
     <p id="msg" class="text-danger mt-2"></p>
   </div>
 
-  <!-- TABS -->
+  <!-- NAV TABS -->
   <ul class="nav nav-tabs d-none" id="mainTabs" role="tablist">
-    <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#tabPosts">پست‌ها</a></li>
-    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tabMedia">رسانه</a></li>
-    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tabSeo">سئو</a></li>
-    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tabDesign">طراحی</a></li>
-    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tabTeam">تیم</a></li>
-    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tabSettings">تنظیمات</a></li>
+    <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#tabPosts" role="tab">پست‌ها</a></li>
+    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tabMedia" role="tab">رسانه</a></li>
+    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tabSeo" role="tab">سئو</a></li>
+    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tabDesign" role="tab">طراحی</a></li>
+    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tabTeam" role="tab">تیم</a></li>
+    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tabSettings" role="tab">تنظیمات</a></li>
   </ul>
 
+  <!-- TAB PANES -->
   <div class="tab-content d-none" id="tabContent">
     <!-- پست‌ها -->
-    <div class="tab-pane fade show active" id="tabPosts">
+    <div class="tab-pane fade show active" id="tabPosts" role="tabpanel">
       <div class="section">
         <h2>ساخت / ویرایش پست</h2>
+        <input type="hidden" id="postId">
         <input id="postTitle" class="form-control mb-2" placeholder="عنوان">
         <select id="postType" class="form-select mb-2">
           <option value="standard">Standard</option>
@@ -54,15 +54,6 @@ h2{color:var(--primary);margin-bottom:15px}
           <option value="live">Live-Blog</option>
         </select>
         <div id="editorPost" class="border mb-2"></div>
-        <input type="file" multiple accept="image/*" onchange="uploadGallery(event)">
-        <div id="galleryPreview" class="row g-2 mt-2"></div>
-        <textarea id="excerpt" class="form-control mb-2" placeholder="خلاصه" rows="2"></textarea>
-        <input type="datetime-local" id="publishDate" class="form-control mb-2">
-        <label>زبان</label>
-        <select id="lang" class="form-select mb-2">
-          <option value="fa">فارسی</option>
-          <option value="en">English</option>
-        </select>
         <button class="btn btn-primary" onclick="savePost()">ذخیره پست</button>
       </div>
       <div class="section">
@@ -72,7 +63,7 @@ h2{color:var(--primary);margin-bottom:15px}
     </div>
 
     <!-- رسانه -->
-    <div class="tab-pane fade" id="tabMedia">
+    <div class="tab-pane fade" id="tabMedia" role="tabpanel">
       <div class="section">
         <h2>رسانه‌ها</h2>
         <input type="file" multiple accept="image/*,video/*,audio/*" onchange="uploadMedia(event)">
@@ -81,7 +72,7 @@ h2{color:var(--primary);margin-bottom:15px}
     </div>
 
     <!-- سئو -->
-    <div class="tab-pane fade" id="tabSeo">
+    <div class="tab-pane fade" id="tabSeo" role="tabpanel">
       <div class="section">
         <h2>سئو و اسکیما</h2>
         <input id="seoTitle" class="form-control mb-2" placeholder="Meta Title">
@@ -92,14 +83,13 @@ h2{color:var(--primary);margin-bottom:15px}
           <option value="Article">Article</option>
           <option value="Course">Course</option>
           <option value="FAQ">FAQ</option>
-          <option value="Product">Product</option>
         </select>
         <button class="btn btn-success" onclick="saveSeo()">ذخیره SEO</button>
       </div>
     </div>
 
     <!-- طراحی -->
-    <div class="tab-pane fade" id="tabDesign">
+    <div class="tab-pane fade" id="tabDesign" role="tabpanel">
       <div class="section">
         <h2>طراحی و چیدمان</h2>
         <div class="row">
@@ -118,7 +108,7 @@ h2{color:var(--primary);margin-bottom:15px}
     </div>
 
     <!-- تیم -->
-    <div class="tab-pane fade" id="tabTeam">
+    <div class="tab-pane fade" id="tabTeam" role="tabpanel">
       <div class="section">
         <h2>همکاری تیمی</h2>
         <input id="newComment" class="form-control mb-2" placeholder="نظر یا تگ @user">
@@ -128,7 +118,7 @@ h2{color:var(--primary);margin-bottom:15px}
     </div>
 
     <!-- تنظیمات -->
-    <div class="tab-pane fade" id="tabSettings">
+    <div class="tab-pane fade" id="tabSettings" role="tabpanel">
       <div class="section">
         <h2>بک‌آپ / بازگردانی</h2>
         <button class="btn btn-success" onclick="exportFull()">دانلود بک‌آپ کامل</button>
@@ -143,10 +133,11 @@ h2{color:var(--primary);margin-bottom:15px}
   </div>
 </div>
 
-<!-- Scripts -->
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 <script>
+/* ---------- LOGIN ---------- */
 const PASSWORD='admin1234';
 function login(){
   if(document.getElementById('pass').value===PASSWORD){
@@ -197,9 +188,7 @@ function savePost(){
     content:quill.root.innerHTML,
     excerpt:document.getElementById('excerpt').value,
     publishDate:document.getElementById('publishDate').value,
-    lang:document.getElementById('lang').value,
-    gallery:JSON.parse(localStorage.getItem('tempGallery')||'[]'),
-    seo:JSON.parse(localStorage.getItem('tempSeo')||'{}')
+    lang:document.getElementById('lang').value
   };
   const posts=JSON.parse(localStorage.getItem('posts')||'[]');
   const idx=posts.findIndex(p=>p.id===id);
@@ -270,20 +259,6 @@ function deleteMedia(i){
   loadMedia();
 }
 
-/* ---------- SEO ---------- */
-function saveSeo(){
-  const seo={
-    title:document.getElementById('seoTitle').value,
-    desc:document.getElementById('seoDesc').value,
-    keywords:document.getElementById('seoKeywords').value,
-    image:document.getElementById('seoImage').value,
-    schema:document.getElementById('schemaType').value
-  };
-  localStorage.setItem('seo',JSON.stringify(seo));
-  logActivity('ذخیره SEO');
-  alert('سئو ذخیره شد');
-}
-
 /* ---------- Design ---------- */
 function saveDesign(){
   const design={
@@ -319,7 +294,7 @@ function loadComments(){
   c.forEach((co,i)=>{
     list.innerHTML+=`<div class="border p-2 mb-2">
       ${co.text} – ${co.user} (${co.time})
-      <button class="btn btn-sm btn-danger" onclick="deleteComment(${i})">حذف</button>
+      <button class="btn btn-sm btn-danger" onclick="deleteComment(${i})">×</button>
     </div>`;
   });
 }
@@ -359,11 +334,6 @@ function logActivity(action){
   log.unshift({action,time:new Date().toLocaleString('fa-IR')});
   if(log.length>100) log.pop();
   localStorage.setItem('log',JSON.stringify(log));
-}
-function showLog(){
-  const log=JSON.parse(localStorage.getItem('log')||'[]');
-  document.getElementById('logBox').style.display='block';
-  document.getElementById('logBox').textContent=log.map(l=>`${l.time} – ${l.action}`).join('\n');
 }
 </script>
 </body>
