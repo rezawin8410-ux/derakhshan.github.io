@@ -6,15 +6,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css" rel="stylesheet">
 <style>
-:root{
-  --primary:#00bfa5;
-  --accent:#ff6f00;
-  --text:#004d40;
-  --bg:#e0f7fa;
-  --font:Vazir,Tahoma,sans-serif;
-}
+:root{--primary:#00bfa5;--accent:#ff6f00;--text:#004d40;--bg:#e0f7fa;--font:Vazir,Tahoma,sans-serif}
 *{margin:0;padding:0;box-sizing:border-box;font-family:var(--font)}
-body{background:var(--bg);color:var(--text);line-height:1.8}
+body{background:var(--bg);color:var(--text);vline-height:1.8}
 header{background:var(--primary);color:#fff;padding:15px 0;position:sticky;top:0;z-index:1000}
 .hero{background:linear-gradient(135deg,var(--primary),#00897b);color:#fff;min-height:60vh;display:flex;align-items:center;justify-content:center;text-align:center}
 .cta{background:var(--accent);color:#fff;padding:14px 30px;border-radius:50px;font-size:1.2rem;text-decoration:none;font-weight:700}
@@ -28,7 +22,6 @@ footer{background:#00897b;color:#fff;padding:40px 0;text-align:center}
 </style>
 </head>
 <body>
-
 <header>
   <div class="container d-flex justify-content-between align-items-center">
     <h1>درخشان ارومیه</h1>
@@ -59,17 +52,21 @@ function loadPosts(){
   const posts=JSON.parse(localStorage.getItem('posts')||'[]');
   const container=document.getElementById('postsContainer');
   container.innerHTML='';
+  if(posts.length===0){
+    container.innerHTML='<p class="text-center">هنوز پستی ثبت نشده است.</p>';
+    return;
+  }
   posts.forEach(p=>{
     container.innerHTML+=`
       <div class="post-card">
         <h3>${p.title}</h3>
-        <small>نوع: ${p.type} – زبان: ${p.lang}</small>
+        <small>منتشر شده در: ${p.created}</small>
         <div class="mt-2">${p.content}</div>
-        <small class="text-muted">منتشر شده در: ${p.publishDate || 'نامشخص'}</small>
       </div>`;
   });
 }
 loadPosts();
+/* اگر در تب دیگر پنل تغییر دادید، اینجا هم رفرش می‌شود */
 window.addEventListener('storage', loadPosts);
 </script>
 </body>
