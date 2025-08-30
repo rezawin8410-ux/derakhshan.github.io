@@ -2,150 +2,158 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<title>پنل مدیریت پیشرفته – درخشان</title>
+<title>پنل مدیریت حرفه‌ای – درخشان</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-<!-- Quill, Prism, Sortable, Chart, Lottie, etc. -->
 <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 <style>
 :root{--primary:#00bfa5;--accent:#ff6f00;--bg:#f5f5f5}
-body{font-family:Vazir,Tahoma;background:var(--bg);margin:0}
+body{font-family:Tahoma;background:var(--bg);margin:0}
 .section{background:#fff;border-radius:10px;padding:20px;margin-bottom:25px}
 h2{color:var(--primary);margin-bottom:15px}
-label{font-weight:700}
-.ql-container{min-height:150px}
-.preview-box img{max-width:100%;border-radius:8px;margin:5px}
+.ql-container{min-height:200px}
+.nav-tabs .nav-link{cursor:pointer}
 </style>
 </head>
 <body>
 <div class="container-fluid mt-3">
-  <h1 class="text-center mb-4">پنل مدیریت پیشرفته – درخشان</h1>
+  <h1 class="text-center mb-4">پنل مدیریت حرفه‌ای – درخشان</h1>
 
   <!-- LOGIN -->
-  <div id="loginBox" class="section" style="max-width:400px;margin:auto">
-    <h2>ورود مدیر</h2>
+  <div id="loginBox" class="text-center" style="max-width:400px;margin:auto">
     <input type="password" id="pass" class="form-control mb-2" placeholder="رمز عبور">
     <button class="btn btn-success w-100" onclick="login()">ورود</button>
     <p id="msg" class="text-danger mt-2"></p>
   </div>
 
-  <!-- PANEL -->
-  <div id="panel" style="display:none">
-    <!-- 1️⃣ تم و رنگ -->
-    <div class="section">
-      <h2>🎨 تم و رنگ</h2>
-      <div class="row">
-        <div class="col-md-3"><label>Primary</label><input type="color" id="col_primary" class="form-control"></div>
-        <div class="col-md-3"><label>Accent</label><input type="color" id="col_accent" class="form-control"></div>
-        <div class="col-md-3"><label>Text</label><input type="color" id="col_text" class="form-control"></div>
-        <div class="col-md-3"><label>Background</label><input type="color" id="col_bg" class="form-control"></div>
+  <!-- TABS -->
+  <ul class="nav nav-tabs d-none" id="mainTabs" role="tablist">
+    <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#tabPosts">پست‌ها</a></li>
+    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tabMedia">رسانه</a></li>
+    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tabSeo">سئو</a></li>
+    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tabDesign">طراحی</a></li>
+    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tabTeam">تیم</a></li>
+    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tabSettings">تنظیمات</a></li>
+  </ul>
+
+  <div class="tab-content d-none" id="tabContent">
+    <!-- پست‌ها -->
+    <div class="tab-pane fade show active" id="tabPosts">
+      <div class="section">
+        <h2>ساخت / ویرایش پست</h2>
+        <input id="postTitle" class="form-control mb-2" placeholder="عنوان">
+        <select id="postType" class="form-select mb-2">
+          <option value="standard">Standard</option>
+          <option value="gallery">Gallery</option>
+          <option value="video">Video</option>
+          <option value="audio">Audio</option>
+          <option value="quote">Quote</option>
+          <option value="link">Link</option>
+          <option value="trivia">Trivia</option>
+          <option value="live">Live-Blog</option>
+        </select>
+        <div id="editorPost" class="border mb-2"></div>
+        <input type="file" multiple accept="image/*" onchange="uploadGallery(event)">
+        <div id="galleryPreview" class="row g-2 mt-2"></div>
+        <textarea id="excerpt" class="form-control mb-2" placeholder="خلاصه" rows="2"></textarea>
+        <input type="datetime-local" id="publishDate" class="form-control mb-2">
+        <label>زبان</label>
+        <select id="lang" class="form-select mb-2">
+          <option value="fa">فارسی</option>
+          <option value="en">English</option>
+        </select>
+        <button class="btn btn-primary" onclick="savePost()">ذخیره پست</button>
       </div>
-      <label>Dark Mode</label>
-      <select id="switch_dark" class="form-select mb-2" onchange="saveTheme()">
-        <option value="light">روشن</option><option value="dark">تیره</option>
-      </select>
-      <button class="btn btn-primary" onclick="saveTheme()">ذخیره تم</button>
+      <div class="section">
+        <h2>پست‌های موجود</h2>
+        <div id="postsList"></div>
+      </div>
     </div>
 
-    <!-- 2️⃣ چیدمان و شبکه -->
-    <div class="section">
-      <h2>🧱 چیدمان و شبکه</h2>
-      <label>Layout Type</label>
-      <select id="layout_type" class="form-select mb-2">
-        <option value="responsive">Responsive</option>
-        <option value="fluid">Fluid</option>
-        <option value="fixed">Fixed</option>
-      </select>
-      <label>Max Container Width (px)</label><input type="number" id="layout_max" class="form-control mb-2" value="1200">
-      <label>Breakpoint XL (px)</label><input type="number" id="layout_xl" class="form-control mb-2" value="1200">
-      <button class="btn btn-primary" onclick="saveLayout()">ذخیره چیدمان</button>
+    <!-- رسانه -->
+    <div class="tab-pane fade" id="tabMedia">
+      <div class="section">
+        <h2>رسانه‌ها</h2>
+        <input type="file" multiple accept="image/*,video/*,audio/*" onchange="uploadMedia(event)">
+        <div id="mediaList" class="row g-2 mt-2"></div>
+      </div>
     </div>
 
-    <!-- 3️⃣ ویرایشگر WYSIWYG -->
-    <div class="section">
-      <h2>✍️ ویرایشگر محتوا</h2>
-      <div id="editor_wysiwyg" class="border"></div>
-      <button class="btn btn-success mt-2" onclick="saveWysiwyg()">ذخیره محتوا</button>
+    <!-- سئو -->
+    <div class="tab-pane fade" id="tabSeo">
+      <div class="section">
+        <h2>سئو و اسکیما</h2>
+        <input id="seoTitle" class="form-control mb-2" placeholder="Meta Title">
+        <textarea id="seoDesc" class="form-control mb-2" placeholder="Meta Description" rows="2"></textarea>
+        <input id="seoKeywords" class="form-control mb-2" placeholder="کلمات کلیدی">
+        <input id="seoImage" class="form-control mb-2" placeholder="OG Image URL">
+        <select id="schemaType" class="form-select mb-2">
+          <option value="Article">Article</option>
+          <option value="Course">Course</option>
+          <option value="FAQ">FAQ</option>
+          <option value="Product">Product</option>
+        </select>
+        <button class="btn btn-success" onclick="saveSeo()">ذخیره SEO</button>
+      </div>
     </div>
 
-    <!-- 4️⃣ المان‌های بصری -->
-    <div class="section">
-      <h2>🎨 المان‌های بصری</h2>
-      <label>نوع اسلایدر</label>
-      <select id="slider_type" class="form-select mb-2">
-        <option value="fade">Fade</option><option value="slide">Slide</option>
-      </select>
-      <label>سرعت اسلایدر (ms)</label><input type="number" id="slider_speed" class="form-control mb-2" value="4000">
-      <button class="btn btn-primary" onclick="saveVisual()">ذخیره ویژوال</button>
+    <!-- طراحی -->
+    <div class="tab-pane fade" id="tabDesign">
+      <div class="section">
+        <h2>طراحی و چیدمان</h2>
+        <div class="row">
+          <div class="col-md-4"><label>Primary</label><input type="color" id="colorPrimary" class="form-control"></div>
+          <div class="col-md-4"><label>Accent</label><input type="color" id="colorAccent" class="form-control"></div>
+          <div class="col-md-4"><label>Background</label><input type="color" id="colorBg" class="form-control"></div>
+        </div>
+        <label>Layout Type</label>
+        <select id="layoutType" class="form-select mb-2">
+          <option value="responsive">Responsive</option>
+          <option value="fixed">Fixed</option>
+          <option value="fluid">Fluid</option>
+        </select>
+        <button class="btn btn-primary" onclick="saveDesign()">ذخیره طراحی</button>
+      </div>
     </div>
 
-    <!-- 5️⃣ ابزار پیشرفته -->
-    <div class="section">
-      <h2>🧪 ابزار پیشرفته</h2>
-      <label>Enable Lazy Load</label>
-      <input type="checkbox" id="opt_lazy" class="form-check-input mb-2">
-      <label>Enable A/B Test</label>
-      <input type="checkbox" id="opt_ab" class="form-check-input mb-2">
-      <button class="btn btn-primary" onclick="saveAdvanced()">ذخیره تنظیمات پیشرفته</button>
+    <!-- تیم -->
+    <div class="tab-pane fade" id="tabTeam">
+      <div class="section">
+        <h2>همکاری تیمی</h2>
+        <input id="newComment" class="form-control mb-2" placeholder="نظر یا تگ @user">
+        <button class="btn btn-info" onclick="addComment()">ارسال نظر</button>
+        <div id="commentsList" class="mt-2"></div>
+      </div>
     </div>
 
-    <!-- 6️⃣ امنیت -->
-    <div class="section">
-      <h2>🔐 امنیت</h2>
-      <label>فعال‌سازی ۲FA</label>
-      <input type="checkbox" id="opt_2fa" class="form-check-input mb-2">
-      <label>محدودیت IP</label>
-      <textarea id="ip_list" class="form-control" rows="2" placeholder="هر IP در یک سطر"></textarea>
-      <button class="btn btn-primary" onclick="saveSecurity()">ذخیره امنیت</button>
+    <!-- تنظیمات -->
+    <div class="tab-pane fade" id="tabSettings">
+      <div class="section">
+        <h2>بک‌آپ / بازگردانی</h2>
+        <button class="btn btn-success" onclick="exportFull()">دانلود بک‌آپ کامل</button>
+        <input type="file" accept=".json" onchange="importFull(event)" class="form-control mt-2">
+      </div>
+      <div class="section">
+        <h2>لاگ فعالیت‌ها</h2>
+        <button class="btn btn-secondary" onclick="showLog()">نمایش لاگ</button>
+        <pre id="logBox" style="display:none;height:200px;overflow:auto;background:#f4f4f4;padding:10px"></pre>
+      </div>
     </div>
-
-    <!-- 7️⃣ رسانه -->
-    <div class="section">
-      <h2>🗂️ رسانه</h2>
-      <input type="file" multiple accept="image/*" onchange="uploadMedia(event)">
-      <div id="mediaLibrary" class="row g-2 mt-2"></div>
-    </div>
-
-    <!-- 8️⃣ گزارش -->
-    <div class="section">
-      <h2>📊 گزارش‌گیری</h2>
-      <canvas id="chart" height="200"></canvas>
-      <button class="btn btn-sm btn-outline-info" onclick="exportReport()">خروجی CSV</button>
-    </div>
-
-    <!-- 9️⃣ بک‌آپ -->
-    <div class="section">
-      <h2>📦 بک‌آپ / بازگردانی</h2>
-      <button class="btn btn-success" onclick="exportBackup()">دانلود بک‌آپ کامل</button>
-      <input type="file" accept=".json" onchange="importBackup(event)" class="form-control mt-2">
-    </div>
-
-    <!-- 🔟 لاگ فعالیت -->
-    <div class="section">
-      <h2>لاگ فعالیت‌ها</h2>
-      <button class="btn btn-sm btn-info" onclick="showLog()">نمایش لاگ</button>
-      <pre id="logBox" style="display:none;height:200px;overflow:auto;background:#f9f9f9;padding:10px;border-radius:5px"></pre>
-    </div>
-
-    <button class="btn btn-danger" onclick="logout()">خروج</button>
   </div>
 </div>
 
 <!-- Scripts -->
 <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
 <script>
-/* ---------- LOGIN ---------- */
 const PASSWORD='admin1234';
 function login(){
   if(document.getElementById('pass').value===PASSWORD){
     localStorage.setItem('isAdmin','true');
-    document.getElementById('loginBox').style.display='none';
-    document.getElementById('panel').style.display='block';
+    document.getElementById('loginBox').classList.add('d-none');
+    document.getElementById('mainTabs').classList.remove('d-none');
+    document.getElementById('tabContent').classList.remove('d-none');
     initQuill();
     loadAll();
   }else{
@@ -157,8 +165,9 @@ function logout(){
   location.reload();
 }
 if(localStorage.getItem('isAdmin')==='true'){
-  document.getElementById('loginBox').style.display='none';
-  document.getElementById('panel').style.display='block';
+  document.getElementById('loginBox').classList.add('d-none');
+  document.getElementById('mainTabs').classList.remove('d-none');
+  document.getElementById('tabContent').classList.remove('d-none');
   initQuill();
   loadAll();
 }
@@ -166,157 +175,171 @@ if(localStorage.getItem('isAdmin')==='true'){
 /* ---------- Quill ---------- */
 let quill;
 function initQuill(){
-  if(window.quill) return;
-  quill = new Quill('#editor_wysiwyg',{theme:'snow'});
+  if(quill) return;
+  quill=new Quill('#editorPost',{theme:'snow'});
 }
 
 /* ---------- Load All ---------- */
 function loadAll(){
-  /* Theme */
-  const t=JSON.parse(localStorage.getItem('siteTheme'))||{};
-  document.getElementById('col_primary').value=t.primary||'#00bfa5';
-  document.getElementById('col_accent').value=t.accent||'#ff6f00';
-  document.getElementById('col_text').value=t.text||'#004d40';
-  document.getElementById('col_bg').value=t.bg||'#e0f7fa';
-  document.getElementById('switch_dark').value=t.dark||'light';
-
-  /* Layout */
-  const l=JSON.parse(localStorage.getItem('siteLayout'))||{};
-  document.getElementById('layout_type').value=l.type||'responsive';
-  document.getElementById('layout_max').value=l.max||1200;
-  document.getElementById('layout_xl').value=l.xl||1200;
-
-  /* WYSIWYG */
-  const w=JSON.parse(localStorage.getItem('wysiwygContent'))||'';
-  if(quill) quill.root.innerHTML=w;
-
-  /* Visual */
-  const v=JSON.parse(localStorage.getItem('siteVisual'))||{};
-  document.getElementById('slider_type').value=v.sliderType||'fade';
-  document.getElementById('slider_speed').value=v.sliderSpeed||4000;
-
-  /* Advanced */
-  const a=JSON.parse(localStorage.getItem('siteAdvanced'))||{};
-  document.getElementById('opt_lazy').checked=a.lazy||false;
-  document.getElementById('opt_ab').checked=a.ab||false;
-
-  /* Security */
-  const s=JSON.parse(localStorage.getItem('siteSecurity'))||{};
-  document.getElementById('opt_2fa').checked=s.twofa||false;
-  document.getElementById('ip_list').value=(s.ips||[]).join('\n');
-
-  /* Media */
+  loadPosts();
   loadMedia();
-
-  /* Chart */
-  drawChart();
+  loadDesign();
 }
 
-/* ---------- Save Functions ---------- */
-function saveTheme(){
-  const obj={
-    primary:document.getElementById('col_primary').value,
-    accent:document.getElementById('col_accent').value,
-    text:document.getElementById('col_text').value,
-    bg:document.getElementById('col_bg').value,
-    dark:document.getElementById('switch_dark').value
+/* ---------- POST ---------- */
+function generateId(){return Date.now().toString(36);}
+function savePost(){
+  const id=document.getElementById('postId').value || generateId();
+  const post={
+    id:id,
+    title:document.getElementById('postTitle').value,
+    type:document.getElementById('postType').value,
+    content:quill.root.innerHTML,
+    excerpt:document.getElementById('excerpt').value,
+    publishDate:document.getElementById('publishDate').value,
+    lang:document.getElementById('lang').value,
+    gallery:JSON.parse(localStorage.getItem('tempGallery')||'[]'),
+    seo:JSON.parse(localStorage.getItem('tempSeo')||'{}')
   };
-  localStorage.setItem('siteTheme',JSON.stringify(obj));
-  logActivity('ذخیره تم');
-  alert('تم ذخیره شد');
+  const posts=JSON.parse(localStorage.getItem('posts')||'[]');
+  const idx=posts.findIndex(p=>p.id===id);
+  if(idx>-1) posts[idx]=post; else posts.push(post);
+  localStorage.setItem('posts',JSON.stringify(posts));
+  logActivity('ذخیره پست '+post.title);
+  alert('ذخیره شد');
+  loadPosts();
 }
-function saveLayout(){
-  const obj={
-    type:document.getElementById('layout_type').value,
-    max:Number(document.getElementById('layout_max').value),
-    xl:Number(document.getElementById('layout_xl').value)
-  };
-  localStorage.setItem('siteLayout',JSON.stringify(obj));
-  logActivity('ذخیره چیدمان');
-  alert('چیدمان ذخیره شد');
+function loadPosts(){
+  const posts=JSON.parse(localStorage.getItem('posts')||'[]');
+  const list=document.getElementById('postsList'); list.innerHTML='';
+  posts.forEach(p=>{
+    list.innerHTML+=`
+      <div class="border p-2 mb-2">
+        <strong>${p.title}</strong> (${p.type})
+        <button class="btn btn-sm btn-warning" onclick="editPost('${p.id}')">ویرایش</button>
+        <button class="btn btn-sm btn-danger" onclick="deletePost('${p.id}')">حذف</button>
+      </div>`;
+  });
 }
-function saveWysiwyg(){
-  const html=quill.root.innerHTML;
-  localStorage.setItem('wysiwygContent',JSON.stringify(html));
-  logActivity('ذخیره محتوا WYSIWYG');
-  alert('محتوا ذخیره شد');
+function editPost(id){
+  const posts=JSON.parse(localStorage.getItem('posts')||'[]');
+  const p=posts.find(x=>x.id===id);
+  document.getElementById('postId').value=p.id;
+  document.getElementById('postTitle').value=p.title;
+  document.getElementById('postType').value=p.type;
+  quill.root.innerHTML=p.content;
+  document.getElementById('excerpt').value=p.excerpt;
+  document.getElementById('publishDate').value=p.publishDate;
+  document.getElementById('lang').value=p.lang;
 }
-function saveVisual(){
-  const obj={
-    sliderType:document.getElementById('slider_type').value,
-    sliderSpeed:Number(document.getElementById('slider_speed').value)
-  };
-  localStorage.setItem('siteVisual',JSON.stringify(obj));
-  logActivity('ذخیره ویژوال');
+function deletePost(id){
+  if(!confirm('آیا مطمئنید؟')) return;
+  const posts=JSON.parse(localStorage.getItem('posts')||'[]').filter(p=>p.id!==id);
+  localStorage.setItem('posts',JSON.stringify(posts));
+  loadPosts();
+  logActivity('حذف پست');
 }
-function saveAdvanced(){
-  const obj={
-    lazy:document.getElementById('opt_lazy').checked,
-    ab:document.getElementById('opt_ab').checked
-  };
-  localStorage.setItem('siteAdvanced',JSON.stringify(obj));
-  logActivity('ذخیره پیشرفته');
-}
-function saveSecurity(){
-  const obj={
-    twofa:document.getElementById('opt_2fa').checked,
-    ips:document.getElementById('ip_list').value.split('\n').filter(Boolean)
-  };
-  localStorage.setItem('siteSecurity',JSON.stringify(obj));
-  logActivity('ذخیره امنیت');
-}
+
+/* ---------- Media ---------- */
 function uploadMedia(e){
   [...e.target.files].forEach(file=>{
     const r=new FileReader();
     r.onload=ev=>{
-      const m=JSON.parse(localStorage.getItem('mediaLibrary'))||[];
-      m.push({src:ev.target.result,name:file.name,size:file.size});
-      localStorage.setItem('mediaLibrary',JSON.stringify(m));
+      const media=JSON.parse(localStorage.getItem('media')||'[]');
+      media.push({src:ev.target.result,name:file.name,size:file.size,type:file.type});
+      localStorage.setItem('media',JSON.stringify(media));
       loadMedia();
     };
     r.readAsDataURL(file);
   });
 }
 function loadMedia(){
-  const m=JSON.parse(localStorage.getItem('mediaLibrary'))||[];
-  const ml=document.getElementById('mediaLibrary'); ml.innerHTML='';
-  m.forEach((f,i)=>{
-    ml.innerHTML+=`
-      <div class="col-6 col-md-2">
-        <img src="${f.src}" class="img-fluid rounded">
-        <button class="btn btn-sm btn-danger" onclick="removeMedia(${i})">×</button>
-      </div>`;
+  const media=JSON.parse(localStorage.getItem('media')||'[]');
+  const list=document.getElementById('mediaList'); list.innerHTML='';
+  media.forEach((m,i)=>{
+    list.innerHTML+=`<div class="col-4 col-md-2">
+      <img src="${m.src}" class="img-fluid rounded">
+      <button class="btn btn-sm btn-danger" onclick="deleteMedia(${i})">×</button>
+    </div>`;
   });
 }
-function removeMedia(i){
-  const m=JSON.parse(localStorage.getItem('mediaLibrary'));
-  m.splice(i,1);
-  localStorage.setItem('mediaLibrary',JSON.stringify(m));
+function deleteMedia(i){
+  const media=JSON.parse(localStorage.getItem('media')||'[]');
+  media.splice(i,1);
+  localStorage.setItem('media',JSON.stringify(media));
   loadMedia();
 }
-function drawChart(){
-  const ctx=document.getElementById('chart').getContext('2d');
-  new Chart(ctx,{
-    type:'line',
-    data:{
-      labels:['فروردین','اردیبهشت','خرداد','تیر','مرداد'],
-      datasets:[{label:'بازدید',data:[120,190,300,500,200],borderColor:'#00bfa5',fill:false}]
-    }
+
+/* ---------- SEO ---------- */
+function saveSeo(){
+  const seo={
+    title:document.getElementById('seoTitle').value,
+    desc:document.getElementById('seoDesc').value,
+    keywords:document.getElementById('seoKeywords').value,
+    image:document.getElementById('seoImage').value,
+    schema:document.getElementById('schemaType').value
+  };
+  localStorage.setItem('seo',JSON.stringify(seo));
+  logActivity('ذخیره SEO');
+  alert('سئو ذخیره شد');
+}
+
+/* ---------- Design ---------- */
+function saveDesign(){
+  const design={
+    primary:document.getElementById('colorPrimary').value,
+    accent:document.getElementById('colorAccent').value,
+    bg:document.getElementById('colorBg').value,
+    layout:document.getElementById('layoutType').value
+  };
+  localStorage.setItem('design',JSON.stringify(design));
+  logActivity('ذخیره طراحی');
+  alert('طراحی ذخیره شد');
+}
+function loadDesign(){
+  const d=JSON.parse(localStorage.getItem('design')||'{}');
+  document.getElementById('colorPrimary').value=d.primary||'#00bfa5';
+  document.getElementById('colorAccent').value=d.accent||'#ff6f00';
+  document.getElementById('colorBg').value=d.bg||'#e0f7fa';
+  document.getElementById('layoutType').value=d.layout||'responsive';
+}
+
+/* ---------- Comments ---------- */
+function addComment(){
+  const txt=document.getElementById('newComment').value;
+  if(!txt) return;
+  const c=JSON.parse(localStorage.getItem('comments')||'[]');
+  c.push({text:txt,user:'Admin',time:new Date().toLocaleString('fa-IR')});
+  localStorage.setItem('comments',JSON.stringify(c));
+  loadComments();
+}
+function loadComments(){
+  const c=JSON.parse(localStorage.getItem('comments')||'[]');
+  const list=document.getElementById('commentsList'); list.innerHTML='';
+  c.forEach((co,i)=>{
+    list.innerHTML+=`<div class="border p-2 mb-2">
+      ${co.text} – ${co.user} (${co.time})
+      <button class="btn btn-sm btn-danger" onclick="deleteComment(${i})">حذف</button>
+    </div>`;
   });
 }
-function exportReport(){
-  const data='data:text/csv;charset=utf-8,'+encodeURIComponent('ماه,بازدید\nفروردین,120\nاردیبهشت,190\nخرداد,300\nتیر,500\nمرداد,200');
-  const link=document.createElement('a'); link.href=data; link.download='report.csv'; link.click();
+function deleteComment(i){
+  const c=JSON.parse(localStorage.getItem('comments')||'[]');
+  c.splice(i,1);
+  localStorage.setItem('comments',JSON.stringify(c));
+  loadComments();
 }
-function exportBackup(){
-  const keys=['siteTheme','siteLayout','wysiwygContent','siteVisual','siteAdvanced','siteSecurity','mediaLibrary','log'];
-  const data=Object.fromEntries(keys.map(k=>[k,JSON.parse(localStorage.getItem(k))||{}]));
+
+/* ---------- Backup ---------- */
+function exportFull(){
+  const keys=['posts','media','seo','design','comments','log'];
+  const data=Object.fromEntries(keys.map(k=>[k,JSON.parse(localStorage.getItem(k))||[]]));
   const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
   const url=URL.createObjectURL(blob);
-  const a=document.createElement('a'); a.href=url; a.download='backup.json'; a.click();
-  logActivity('دانلود بک‌آپ');
+  const a=document.createElement('a'); a.href=url; a.download='full_backup.json'; a.click();
+  logActivity('Export Full Backup');
 }
-function importBackup(e){
+function importFull(e){
   const file=e.target.files[0];
   if(!file) return;
   const r=new FileReader();
@@ -324,19 +347,21 @@ function importBackup(e){
     const data=JSON.parse(ev.target.result);
     Object.keys(data).forEach(k=>localStorage.setItem(k,JSON.stringify(data[k])));
     loadAll();
-    alert('بازگردانی انجام شد');
-    logActivity('بازگردانی از فایل');
+    alert('بازگردانی شد');
+    logActivity('Import Full Backup');
   };
   r.readAsText(file);
 }
+
+/* ---------- Log ---------- */
 function logActivity(action){
-  const log=JSON.parse(localStorage.getItem('log'))||[];
-  log.unshift({action,user:'Admin',time:new Date().toLocaleString('fa-IR')});
+  const log=JSON.parse(localStorage.getItem('log')||'[]');
+  log.unshift({action,time:new Date().toLocaleString('fa-IR')});
   if(log.length>100) log.pop();
   localStorage.setItem('log',JSON.stringify(log));
 }
 function showLog(){
-  const log=JSON.parse(localStorage.getItem('log'))||[];
+  const log=JSON.parse(localStorage.getItem('log')||'[]');
   document.getElementById('logBox').style.display='block';
   document.getElementById('logBox').textContent=log.map(l=>`${l.time} – ${l.action}`).join('\n');
 }
