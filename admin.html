@@ -13,6 +13,8 @@ h2{color:var(--primary);margin-bottom:15px}
 #editorText{width:100%;min-height:200px;border:1px solid #ccc;border-radius:8px;padding:10px;font-family:inherit}
 #previewDIV{background:#f9f9f9;border:1px dashed #ccc;border-radius:8px;padding:15px;margin-top:10px}
 #previewDIV img{max-width:100%;border-radius:6px;margin:5px 0}
+.toolbar button{margin:2px}
+.modal-body input, .modal-body textarea{width:100%;margin-bottom:10px}
 @media (max-width:576px){.section{padding:15px}}
 </style>
 </head>
@@ -29,28 +31,39 @@ h2{color:var(--primary);margin-bottom:15px}
 
   <!-- PANEL -->
   <div id="panel" class="d-none">
-    <!-- ساخت / ویرایش پست -->
     <div class="section">
       <input type="hidden" id="postId">
       <input id="postTitle" class="form-control mb-2" placeholder="عنوان پست">
+
+      <!-- Toolbar -->
+      <div class="toolbar mb-2">
+        <button class="btn btn-sm btn-outline-secondary" onclick="wrapText('**','**')">B</button>
+        <button class="btn btn-sm btn-outline-secondary" onclick="wrapText('*','*')">I</button>
+        <button class="btn btn-sm btn-outline-secondary" onclick="wrapText('<span style=\'color:red;\'>','</span>')">قرمز</button>
+        <button class="btn btn-sm btn-outline-secondary" onclick="wrapText('<span style=\'color:blue;\'>','</span>')">آبی</button>
+        <button class="btn btn-sm btn-outline-secondary" onclick="wrapText('<div class=\'text-start\'>','</div>')">چپ</button>
+        <button class="btn btn-sm btn-outline-secondary" onclick="wrapText('<div class=\'text-center\'>','</div>')">وسط</button>
+        <button class="btn btn-sm btn-outline-secondary" onclick="wrapText('<div class=\'text-end\'>','</div>')">راست</button>
+        <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#imageModal">عکس</button>
+        <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#codeModal">کد</button>
+        <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#formulaModal">فرمول</button>
+        <button class="btn btn-sm btn-outline-secondary" onclick="togglePreview()">پیش‌نمایش</button>
+      </div>
+
       <textarea id="editorText" placeholder="محتوا (متن، تصویر، کد، فرمول و …)"></textarea>
-      <button class="btn btn-outline-secondary mt-1" onclick="insertImage()">افزودن عکس</button>
-      <button class="btn btn-outline-secondary mt-1" onclick="insertCode()">کد</button>
-      <button class="btn btn-outline-secondary mt-1" onclick="insertFormula()">فرمول LaTeX</button>
-      <button class="btn btn-outline-secondary mt-1" onclick="togglePreview()">پیش‌نمایش</button>
+
       <div id="previewDIV" style="display:none;"></div>
+
       <textarea id="customHead" class="form-control mt-2" rows="2" placeholder="کد دلخواه Head این پست"></textarea>
       <textarea id="customFoot" class="form-control mt-2" rows="2" placeholder="کد دلخواه Footer این پست"></textarea>
       <button class="btn btn-primary mt-2" onclick="savePost()">ذخیره پست</button>
     </div>
 
-    <!-- لیست پست‌ها -->
     <div class="section">
       <h2>پست‌های موجود</h2>
       <div id="postsList"></div>
     </div>
 
-    <!-- بک‌آپ -->
     <div class="section">
       <button class="btn btn-success" onclick="exportFull()">دانلود بک‌آپ</button>
       <input type="file" accept=".json" onchange="importFull(event)" class="form-control mt-2">
@@ -58,6 +71,52 @@ h2{color:var(--primary);margin-bottom:15px}
   </div>
 </div>
 
+<!-- Image Modal -->
+<div class="modal fade" id="imageModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">افزودن عکس</div>
+      <div class="modal-body">
+        <input type="text" id="imgUrl" placeholder="آدرس عکس">
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" onclick="insertImage()">افزودن</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Code Modal -->
+<div class="modal fade" id="codeModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">افزودن کد</div>
+      <div class="modal-body">
+        <textarea id="codeInput" rows="4" placeholder="کد را اینجا وارد کنید"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" onclick="insertCode()">افزودن</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Formula Modal -->
+<div class="modal fade" id="formulaModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">افزودن فرمول LaTeX</div>
+      <div class="modal-body">
+        <input type="text" id="formulaInput" placeholder="مثلاً x^2 + y^2">
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" onclick="insertFormula()">افزودن</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
 const PASSWORD='admin1234';
 function login(){
@@ -74,6 +133,44 @@ if(localStorage.getItem('isAdmin')==='true'){
   document.getElementById('loginBox').classList.add('d-none');
   document.getElementById('panel').classList.remove('d-none');
   loadPosts();
+}
+
+function wrapText(before, after){
+  const el=document.getElementById('editorText');
+  const start=el.selectionStart;
+  const end=el.selectionEnd;
+  const selected=el.value.substring(start,end);
+  const newText=el.value.substring(0,start)+before+selected+after+el.value.substring(end);
+  el.value=newText;
+  el.focus();
+}
+
+function insertImage(){
+  const url=document.getElementById('imgUrl').value;
+  if(!url) return;
+  document.getElementById('editorText').value+=`<img src="${url}" class="img-fluid">`;
+  bootstrap.Modal.getInstance(document.getElementById('imageModal')).hide();
+  document.getElementById('imgUrl').value='';
+}
+function insertCode(){
+  const code=document.getElementById('codeInput').value;
+  if(!code) return;
+  document.getElementById('editorText').value+=`<pre><code>${code}</code></pre>`;
+  bootstrap.Modal.getInstance(document.getElementById('codeModal')).hide();
+  document.getElementById('codeInput').value='';
+}
+function insertFormula(){
+  const formula=document.getElementById('formulaInput').value;
+  if(!formula) return;
+  document.getElementById('editorText').value+=`<span class="katex">${formula}</span>`;
+  bootstrap.Modal.getInstance(document.getElementById('formulaModal')).hide();
+  document.getElementById('formulaInput').value='';
+}
+
+function togglePreview(){
+  const preview=document.getElementById('previewDIV');
+  preview.style.display=preview.style.display==='none'?'block':'none';
+  preview.innerHTML=document.getElementById('editorText').value;
 }
 
 /* ذخیره و بازیابی */
@@ -126,31 +223,6 @@ function deletePost(id){
   const posts=JSON.parse(localStorage.getItem('posts')||'[]').filter(p=>p.id!==id);
   localStorage.setItem('posts',JSON.stringify(posts));
   loadPosts();
-}
-
-/* ابزارهای ساده */
-function insertImage(){
-  const url=prompt('لینک عکس را وارد کنید:');
-  if(!url) return;
-  const imgTag='<img src="'+url+'" alt="عکس" class="img-fluid">';
-  document.getElementById('editorText').value+=imgTag;
-}
-function insertCode(){
-  const code=prompt('کد را وارد کنید:');
-  if(!code) return;
-  const codeTag='<pre><code>'+code+'</code></pre>';
-  document.getElementById('editorText').value+=codeTag;
-}
-function insertFormula(){
-  const formula=prompt('فرمول LaTeX را وارد کنید (مثلاً x^2):');
-  if(!formula) return;
-  const tag='<span class="katex">'+formula+'</span>';
-  document.getElementById('editorText').value+=tag;
-}
-function togglePreview(){
-  const preview=document.getElementById('previewDIV');
-  preview.style.display=preview.style.display==='none'?'block':'none';
-  preview.innerHTML=document.getElementById('editorText').value;
 }
 function exportFull(){
   const data={posts:JSON.parse(localStorage.getItem('posts')||'[]')};
