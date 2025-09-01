@@ -1,73 +1,125 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<title>درخشان – شستشوی مبل و تشک در محل ارومیه</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css" rel="stylesheet">
-<style>
-:root{--primary:#00bfa5;--accent:#ff6f00;--text:#004d40;--bg:#e0f7fa;--font:Vazir,Tahoma,sans-serif}
-*{margin:0;padding:0;box-sizing:border-box;font-family:var(--font)}
-body{background:var(--bg);color:var(--text);line-height:1.8}
-header{background:var(--primary);color:#fff;padding:15px 0;position:sticky;top:0;z-index:1000}
-.hero{background:linear-gradient(135deg,var(--primary),#00897b);color:#fff;min-height:60vh;display:flex;align-items:center;justify-content:center;text-align:center}
-.cta{background:var(--accent);color:#fff;padding:14px 30px;border-radius:50px;font-size:1.2rem;text-decoration:none;font-weight:700}
-.container{max-width:1200px;margin:0 auto;padding:0 15px}
-.post-card{background:#fff;border-radius:15px;padding:20px;margin:15px 0;box-shadow:0 4px 12px rgba(0,0,0,.08)}
-.post-card *{max-width:100%}
-.post-card img{max-width:100%;height:auto;border-radius:8px;margin:10px 0}
-.post-card pre{background:#f4f4f4;padding:10px;border-radius:6px;overflow:auto}
-.post-card code{background:#eee;padding:2px 4px;border-radius:4px}
-footer{background:#00897b;color:#fff;padding:40px 0;text-align:center}
-@media (max-width:576px){.post-card{padding:15px}}
-</style>
+  <meta charset="UTF-8">
+  <title>درخشان – شستشوی مبل و تشک در محل ارومیه</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="ارائه خدمات حرفه‌ای شستشوی مبل، فرش و تشک در ارومیه با تضمین کیفیت و رضایت مشتری">
+  <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="logo.png">
 </head>
 <body>
-<header>
-  <div class="container d-flex justify-content-between align-items-center">
-    <h1>درخشان ارومیه</h1>
-    <a href="admin.html" class="btn btn-light btn-sm">ورود به پنل مدیریت</a>
-  </div>
-</header>
+  <!-- هدر و منو -->
+  <header class="main-header">
+    <div class="container d-flex space-between align-center">
+      <div class="logo-title">
+        <img src="logo.png" alt="لوگو" class="logo">
+        <span>درخشان ارومیه</span>
+      </div>
+      <nav>
+        <ul class="main-nav">
+          <li><a href="#home">خانه</a></li>
+          <li><a href="#services">خدمات</a></li>
+          <li><a href="#gallery">نمونه‌کارها</a></li>
+          <li><a href="#testimonials">نظرات</a></li>
+          <li><a href="#contact">تماس با ما</a></li>
+        </ul>
+      </nav>
+      <a href="admin.html" class="admin-btn">پنل مدیریت</a>
+    </div>
+  </header>
 
-<section class="hero">
-  <div>
-    <h2>مبل، تشک، فرش → مثل روز اولش کن!</h2>
-    <p>بدون جابجایی، با تضمین رضایت 💯٪؛ اگر خوشت نیومد پول نمی‌گیریم.</p>
-    <a href="#posts" class="cta">مشاهده پست‌ها</a>
-  </div>
-</section>
+  <!-- اسلایدر -->
+  <section id="home" class="hero-slider">
+    <div class="slider-content">
+      <h1>شستشوی تخصصی مبل، فرش و تشک</h1>
+      <p>در محل شما، با جدیدترین تجهیزات و تضمین رضایت ۱۰۰٪</p>
+      <a href="#contact" class="cta-btn">درخواست مشاوره رایگان</a>
+    </div>
+  </section>
 
-<section id="posts" class="container">
-  <h2 class="text-center mb-4">آخرین پست‌ها</h2>
-  <div id="postsContainer"></div>
-</section>
+  <!-- کارت خدمات -->
+  <section id="services" class="services-section container">
+    <h2>خدمات ما</h2>
+    <div class="services-cards">
+      <div class="service-card">
+        <span class="service-icon">🛋️</span>
+        <h3>شستشوی مبل</h3>
+        <p>شستشوی انواع مبل با دستگاه‌های مدرن و شوینده‌های تخصصی</p>
+      </div>
+      <div class="service-card">
+        <span class="service-icon">🛏️</span>
+        <h3>شستشوی تشک</h3>
+        <p>شستشوی عمیق و ضدعفونی انواع تشک در محل مشتری</p>
+      </div>
+      <div class="service-card">
+        <span class="service-icon">🧺</span>
+        <h3>شستشوی فرش</h3>
+        <p>شستشوی فرش و قالیچه با بهترین مواد شوینده و تحویل فوری</p>
+      </div>
+    </div>
+  </section>
 
-<footer>
-  <p>© ۲۰۲۴ درخشان ارومیه – تمامی حقوق محفوظ است</p>
-</footer>
+  <!-- گالری نمونه کار -->
+  <section id="gallery" class="gallery-section container">
+    <h2>نمونه‌کارها</h2>
+    <div class="gallery-grid">
+      <img src="gallery1.jpg" alt="نمونه کار ۱">
+      <img src="gallery2.jpg" alt="نمونه کار ۲">
+      <img src="gallery3.jpg" alt="نمونه کار ۳">
+      <img src="gallery4.jpg" alt="نمونه کار ۴">
+    </div>
+  </section>
 
-<script>
-/* بارگذاری پست‌ها + عکس‌ها + کد */
-function loadPosts(){
-  const posts=JSON.parse(localStorage.getItem('posts')||'[]');
-  const container=document.getElementById('postsContainer');
-  container.innerHTML='';
-  if(posts.length===0){
-    container.innerHTML='<p class="text-center">هنوز پستی ثبت نشده است.</p>';
-    return;
-  }
-  posts.forEach(p=>{
-    container.innerHTML+=`
-      <div class="post-card">
-        <h3>${p.title}</h3>
-        <small>منتشر شده در: ${p.created}</small>
-        <div class="mt-2">${p.content}</div>
-      </div>`;
-  });
-}
-loadPosts();
-window.addEventListener('storage', loadPosts);
-</script>
+  <!-- نظرات مشتریان -->
+  <section id="testimonials" class="testimonials-section container">
+    <h2>نظرات مشتریان</h2>
+    <div class="testimonials-cards">
+      <div class="testimonial-card">
+        <p>«کارشون فوق‌العاده تمیز و حرفه‌ای بود. خیلی راضی‌ام!»</p>
+        <span>– محمدی</span>
+      </div>
+      <div class="testimonial-card">
+        <p>«زمان‌بندی عالی و برخورد بسیار محترمانه. پیشنهاد می‌کنم.»</p>
+        <span>– رضایی</span>
+      </div>
+      <div class="testimonial-card">
+        <p>«تشکم مثل روز اولش شد! واقعاً عالی.»</p>
+        <span>– الهامی</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- فرم تماس با ما -->
+  <section id="contact" class="contact-section container">
+    <h2>تماس با ما</h2>
+    <form class="contact-form" id="contactForm">
+      <input type="text" name="name" placeholder="نام و نام خانوادگی" required>
+      <input type="tel" name="phone" placeholder="شماره تماس" required>
+      <textarea name="message" placeholder="پیام شما..." required></textarea>
+      <button type="submit">ارسال پیام</button>
+    </form>
+    <div class="contact-info">
+      <p>تلفن: <a href="tel:09121234567">09121234567</a></p>
+      <p>واتساپ: <a href="https://wa.me/989121234567">ارسال پیام واتساپ</a></p>
+      <p>آدرس: ارومیه، خیابان نمونه، پلاک ۱۲۳</p>
+      <div class="social-links">
+        <a href="#" title="اینستاگرام">📸</a>
+        <a href="#" title="تلگرام">💬</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- دکمه تماس سریع -->
+  <a href="tel:09121234567" class="quick-call-btn" title="تماس سریع">📞</a>
+
+  <!-- فوتر -->
+  <footer>
+    <p>© ۲۰۲۵ درخشان ارومیه – تمامی حقوق محفوظ است.</p>
+    <p>طراحی شده با ❤️ توسط تیم درخشان</p>
+  </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>
