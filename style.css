@@ -1,231 +1,347 @@
-:root {
-  --primary: #00bfa5;
-  --accent: #ff6f00;
-  --text: #004d40;
-  --bg: #e0f7fa;
-  --font: Vazir, Tahoma, sans-serif;
-}
 body {
-  margin: 0;
-  padding: 0;
-  font-family: var(--font);
-  background: var(--bg);
-  color: var(--text);
-  direction: rtl;
-  line-height: 1.8;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background-color: #f4f4f4;
+    color: #333;
+    direction: rtl; /* برای فارسی */
+    text-align: right; /* برای فارسی */
 }
+
 .container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 15px;
+    display: flex;
+    min-height: 100vh;
 }
-.main-header {
-  background: var(--primary);
-  color: #fff;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  padding: 12px 0;
-}
-.logo-title {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.logo {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-}
-.main-nav {
-  display: flex;
-  gap: 25px;
-  list-style: none;
-}
-.main-nav li a {
-  color: #fff;
-  text-decoration: none;
-  font-weight: 700;
-  transition: color 0.2s;
-}
-.main-nav li a:hover {
-  color: var(--accent);
-}
-.admin-btn {
-  background: #fff;
-  color: var(--primary);
-  padding: 6px 18px;
-  border-radius: 20px;
-  text-decoration: none;
-  font-weight: 700;
-  transition: background 0.2s, color 0.2s;
-}
-.admin-btn:hover {
-  background: var(--accent);
-  color: #fff;
-}
-.hero-slider {
-  background: linear-gradient(135deg, var(--primary), #00897b);
-  color: #fff;
-  min-height: 60vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-}
-.slider-content h1 {
-  font-size: 2.2rem;
-  margin-bottom: 18px;
-}
-.cta-btn {
-  display: inline-block;
-  background: var(--accent);
-  color: #fff;
-  padding: 13px 34px;
-  border-radius: 40px;
-  font-size: 1.1rem;
-  font-weight: 700;
-  text-decoration: none;
-  margin-top: 18px;
-  transition: background 0.2s;
-}
-.cta-btn:hover {
-  background: #ffa040;
-}
-.services-section, .gallery-section, .testimonials-section, .contact-section {
-  margin-top: 48px;
-}
-.services-cards, .testimonials-cards, .gallery-grid {
-  display: flex;
-  gap: 22px;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-.service-card {
-  background: #fff;
-  border-radius: 14px;
-  box-shadow: 0 2px 9px rgb(0 0 0 / 8%);
-  padding: 22px 16px;
-  text-align: center;
-  min-width: 210px;
-  max-width: 300px;
-  flex: 1 1 200px;
-}
-.service-icon {
-  font-size: 2.6rem;
-  margin-bottom: 10px;
-  display: block;
-}
-.gallery-grid img {
-  width: 220px;
-  height: 140px;
-  object-fit: cover;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px #0001;
-}
-.testimonial-card {
-  background: #fff;
-  border-radius: 14px;
-  box-shadow: 0 2px 9px rgb(0 0 0 / 8%);
-  padding: 20px;
-  min-width: 220px;
-  max-width: 300px;
-  flex: 1 1 180px;
-  text-align: right;
-}
-.testimonial-card span {
-  display: block;
-  margin-top: 12px;
-  color: var(--primary);
-  font-size: 1rem;
-}
-.contact-section {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 30px;
-  margin-bottom: 32px;
-}
-.contact-form {
-  flex: 1 1 320px;
-  display: flex;
-  flex-direction: column;
-  gap: 13px;
-  background: #fff;
-  border-radius: 14px;
-  box-shadow: 0 2px 9px #0002;
-  padding: 22px 15px;
-}
-.contact-form input, .contact-form textarea {
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 1rem;
-  resize: vertical;
-}
-.contact-form button {
-  background: var(--primary);
-  color: #fff;
-  padding: 11px 0;
-  border: none;
-  border-radius: 20px;
-  font-size: 1.1rem;
-  font-family: inherit;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-.contact-form button:hover {
-  background: var(--accent);
-}
-.contact-info {
-  flex: 1 1 220px;
-  background: #fff;
-  border-radius: 14px;
-  box-shadow: 0 2px 9px #0002;
-  padding: 22px 15px;
-}
-.social-links {
-  margin-top: 16px;
-  display: flex;
-  gap: 16px;
-}
-.social-links a {
-  font-size: 2rem;
-  text-decoration: none;
-}
-.quick-call-btn {
-  position: fixed;
-  left: 18px;
-  bottom: 18px;
-  background: var(--accent);
-  color: #fff;
-  font-size: 2.2rem;
-  border-radius: 50%;
-  padding: 13px 18px;
-  box-shadow: 0 2px 9px #0003;
-  z-index: 999;
-  transition: background 0.2s;
-}
-.quick-call-btn:hover {
-  background: #ff9100;
-}
-footer {
-  background: #00897b;
-  color: #fff;
-  text-align: center;
-  padding: 32px 0 22px 0;
-  font-size: 1.1rem;
-}
-@media (max-width: 900px) {
-  .services-cards, .testimonials-cards, .gallery-grid, .contact-section {
+
+.sidebar {
+    width: 250px;
+    background-color: #2c3e50;
+    color: #ecf0f1;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    display: flex;
     flex-direction: column;
+    justify-content: space-between;
+}
+
+.sidebar h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #ecf0f1;
+}
+
+.sidebar nav ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar nav ul li {
+    margin-bottom: 10px;
+}
+
+.sidebar nav ul li a {
+    color: #ecf0f1;
+    text-decoration: none;
+    padding: 10px 15px;
+    display: block;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.sidebar nav ul li a i {
+    margin-left: 10px;
+}
+
+.sidebar nav ul li a:hover,
+.sidebar nav ul li a.active {
+    background-color: #34495e;
+}
+
+.badge {
+    background-color: #e74c3c;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 10px;
+    font-size: 0.8em;
+    margin-right: 5px;
+}
+
+.logout-btn {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    width: 100%;
+      margin-top: 20px;
+    transition: background-color 0.3s ease;
+}
+
+.logout-btn:hover {
+    background-color: #c0392b;
+}
+
+.main-content {
+    flex-grow: 1;
+    padding: 20px;
+    background-color: #fff;
+    position: relative; /* برای نوتیفیکیشن و لودینگ */
+}
+
+.section {
+    display: none;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
+}
+
+.section.active {
+    display: block;
+}
+
+h2, h3 {
+    color: #2c3e50;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+form {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+form input[type="text"],
+form input[type="password"],
+form textarea {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1em;
+}
+
+form button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+}
+
+form button:hover {
+    background-color: #2980b9;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+ul li {
+    background-color: #f9f9f9;
+    border: 1px solid #eee;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+}
+
+ul li h4 {
+    margin-top: 0;
+    color: #34495e;
+}
+
+ul li p {
+    margin-bottom: 10px;
+    line-height: 1.6;
+}
+
+.actions {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px; /* فاصله بین دکمه‌ها */
+}
+
+.actions button {
+    background-color: #2ecc71; /* Edit/Reply/Mark as Read */
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.3s ease;
+}
+
+.actions button.edit-btn {
+    background-color: #3498db;
+}
+.actions button.delete-btn {
+    background-color: #e74c3c;
+}
+.actions button.reply-btn {
+    background-color: #f39c12;
+}
+.actions button.mark-read-btn {
+    background-color: #2ecc71;
+}
+.actions button.mark-unread-btn {
+    background-color: #9b59b6; /* رنگ متفاوت برای نخوانده */
+}
+
+
+.actions button:hover {
+    opacity: 0.9;
+}
+
+.actions button i {
+    margin-left: 5px;
+}
+
+/* Feedback specific styles */
+.feedback-item.feedback-read {
+    background-color: #e9ecef; /* رنگ برای بازخوردهای خوانده شده */
+    opacity: 0.8;
+}
+
+.feedback-reply {
+    background-color: #e0f2f7;
+    border-top: 1px solid #dcdcdc;
+    padding-top: 10px;
+    margin-top: 10px;
+}
+
+.feedback-reply-form {
+    margin-top: 10px;
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+}
+
+.feedback-reply-form textarea {
+    width: calc(100% - 20px);
+    margin-bottom: 10px;
+}
+
+.feedback-reply-form button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Notification Styles */
+#notification-container {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 300px;
+    z-index: 1000;
+}
+
+.notification {
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    color: white;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.notification.success {
+    background-color: #28a745; /* Green */
+}
+
+.notification.error {
+    background-color: #dc3545; /* Red */
+}
+
+.notification.info {
+    background-color: #17a2b8; /* Blue */
+}
+
+/* Loading Spinner Styles */
+.loading-spinner {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+      justify-content: center;
     align-items: center;
-  }
-  .main-nav {
-    gap: 10px;
-  }
-  .contact-info, .contact-form {
-    max-width: 100%;
-    min-width: unset;
-  }
+}
+
+.loading-spinner::after {
+    content: '';
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #3498db;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+    .sidebar {
+        width: 100%;
+        height: auto;
+        padding: 10px;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-around;
+    }
+    .sidebar h2 {
+        display: none;
+    }
+    .sidebar nav ul {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        width: 100%;
+    }
+    .sidebar nav ul li {
+        margin: 5px;
+    }
+    .sidebar nav ul li a {
+        padding: 8px 10px;
+        font-size: 0.9em;
+    }
+    .logout-btn {
+        width: auto;
+        margin-top: 10px;
+    }
+    .main-content {
+        padding: 10px;
+    }
 }
